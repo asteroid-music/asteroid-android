@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Asteroid Android</string>
+    <string name="serverScreenHeader">Select or Add Server</string>
+    <string name="server_add_button_description">Add new server</string>
+    <string name="addServerScreenHeader">Add Server</string>
+    <string name="server_name">Server name:</string>
+    <string name="server_name_hint">Server name</string>
+    <string name="add_server_button_text">Add Server</string>
+</resources>
