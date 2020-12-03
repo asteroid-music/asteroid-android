@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
@@ -20,9 +21,44 @@
         android:id="@+id/editTextServerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="@string/server_name_hint"
         android:ems="10"
         android:hint="@string/server_name_hint"
-        android:autofillHints="@string/server_name_hint"
+        android:inputType="text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/server_private_text" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/serverPrivateSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/privateInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/info_about_server_private_state"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextServerAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/server_address_hint"
+        android:ems="10"
+        android:hint="@string/server_address_hint"
         android:inputType="text" />
 
     <Button
@@ -30,4 +66,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_server_button_text" />
+
 </LinearLayout>

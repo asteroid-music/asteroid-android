@@ -3,7 +3,18 @@
     <string name="serverScreenHeader">Select or Add Server</string>
     <string name="server_add_button_description">Add new server</string>
     <string name="addServerScreenHeader">Add Server</string>
-    <string name="server_name">Server name:</string>
+    <string name="edit_server_screen_header">Edit Server</string>
     <string name="server_name_hint">Server name</string>
     <string name="add_server_button_text">Add Server</string>
+    <string name="update_server_button_text">Save Changes</string>
+    <string name="server_address_hint">Server address</string>
+    <string name="server_private_text">Server is private:</string>
+    <string name="info_about_server_private_state">Info about server public/private setting</string>
+    <string name="server_privacy_full_info">Set this switch to \'on\' if the server is only accessible from the current network (e.g the WiFi network you are connected to). Leave the switch \'off\' if the server is publicly accessible, i.e if you could access it from the same server address whilst connected to a different network.</string>
+    <string name="connection_good_indicator">Indicator that a connection to this server can be made</string>
+    <string name="connection_bad_indicator">Indicator that a connection to this server cannot be made</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="delete_confirm_text">Are you sure you want to delete this server? This action cannot be undone.</string>
+    <string name="literal_yes">Yes</string>
+    <string name="literal_no">No</string>
 </resources>

@@ -14,8 +14,67 @@
 
         <TextView
             android:id="@+id/serverItemTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/placeholder"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/serverItemAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="serif-monospace"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/placeholder" />
+
+        <ImageButton
+            android:id="@+id/editInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/info_about_server_private_state"
+            card_view:srcCompat="@android:drawable/ic_menu_edit" />
+
+        <ImageButton
+            android:id="@+id/deleteServerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/info_about_server_private_state"
+            card_view:srcCompat="@android:drawable/ic_menu_delete" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxWidth="20sp"
+            android:maxHeight="20sp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/connectionGoodIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/connection_good_indicator"
+            android:visibility="gone"
+            card_view:srcCompat="@android:drawable/button_onoff_indicator_on" />
+
+        <ImageView
+            android:id="@+id/connectionBadIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/connection_bad_indicator"
+            android:visibility="gone"
+            card_view:srcCompat="@android:drawable/button_onoff_indicator_off" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -18,6 +18,21 @@ class ServerListActivity : AppCompatActivity() {
         //Set the server list layout
         setContentView(R.layout.activity_server_list)
 
+        refreshRecyclerView()
+
+        //Make the '+' button redirect to the AddServerActivity
+        addServerButton.setOnClickListener{
+            val changePageIntent = Intent(this,ServerAddActivity::class.java)
+            startActivity(changePageIntent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshRecyclerView()
+    }
+
+    private fun refreshRecyclerView() {
         //Create a vertical linear layout manager and apply it to the recyclerView
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -26,11 +41,5 @@ class ServerListActivity : AppCompatActivity() {
         //Create an instance of the server list adapter and apply it to the recyclerView
         val adapter = ServerListAdapter(this, PlaceholderServerData.servers)
         recyclerView.adapter = adapter
-
-        //Make the '+' button redirect to the AddServerActivity
-        addServerButton.setOnClickListener{
-            val changePageIntent = Intent(this,ServerAddActivity::class.java)
-            startActivity(changePageIntent)
-        }
     }
 }
