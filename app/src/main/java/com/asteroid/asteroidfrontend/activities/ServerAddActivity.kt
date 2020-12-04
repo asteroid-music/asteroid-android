@@ -12,8 +12,10 @@ import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.displayMessage
-import com.asteroid.asteroidfrontend.models.PlaceholderServerData
 import com.asteroid.asteroidfrontend.models.ServerModel
+import io.realm.Realm
+import io.realm.kotlin.createObject
+import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add_server.*
 
 /**
@@ -21,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_add_server.*
  */
 class ServerAddActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val realm = Realm.getDefaultInstance()
         super.onCreate(savedInstanceState)
         //Set the server add layout
         setContentView(R.layout.activity_add_server)
@@ -48,14 +51,29 @@ class ServerAddActivity: AppCompatActivity() {
                 serverAddress.isEmpty() -> {
                     displayMessage("Please enter a server address!")
                 }
-                PlaceholderServerData.servers.any {it.name == serverName} -> {
+                realm.where<ServerModel>().equalTo("name",serverName)
+                    .findAll()
+                    .isNotEmpty() -> {
                     displayMessage("Server name already in use!")
                 }
-                PlaceholderServerData.servers.any {it.address == serverAddress && (!it.local || it.wifiNetworkId == serverNetworkId)} -> {
+                (serverIsPrivate && serverNetworkId != null && realm.where<ServerModel>().equalTo("address",serverAddress)
+                    .equalTo("wifiNetworkId",serverNetworkId)
+                    .findAll()
+                    .isNotEmpty()) -> {
+                    displayMessage("This server is already in your list!")
+                }
+                (!serverIsPrivate && realm.where<ServerModel>().equalTo("address",serverAddress)
+                    .findAll()
+                    .isNotEmpty()) -> {
                     displayMessage("This server is already in your list!")
                 }
                 else -> {
-                    PlaceholderServerData.servers.add(ServerModel(serverName, serverAddress, serverIsPrivate, serverNetworkId))
+                    realm.executeTransaction {
+                        val newServerItem = realm.createObject<ServerModel>(serverName)
+                        newServerItem.address = serverAddress
+                        newServerItem.local = serverIsPrivate
+                        newServerItem.wifiNetworkId = serverNetworkId
+                    }
                     val changePageIntent = Intent(this, ServerListActivity::class.java)
                     startActivity(changePageIntent)
                 }

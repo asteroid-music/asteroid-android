@@ -14,10 +14,11 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.activities.ServerEditActivity
 import com.asteroid.asteroidfrontend.activities.ServerListActivity
 import com.asteroid.asteroidfrontend.models.HealthCheck
-import com.asteroid.asteroidfrontend.models.PlaceholderServerData
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.services.ServerStatusInterface
 import com.asteroid.asteroidfrontend.services.ServiceBuilder
+import io.realm.Realm
+import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.server_delete_confirmation.view.*
 import kotlinx.android.synthetic.main.server_list_item.view.*
 import retrofit2.Call
@@ -34,7 +35,7 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
      * The view holder for a single server list item view
      */
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun setData(serverInfo: ServerModel?, pos: Int) {
+        fun setData(serverInfo: ServerModel?) {
             serverInfo?.let {
                 //Set up server name
                 itemView.serverItemTitle.text = it.name
@@ -46,7 +47,7 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                 //Set up event handler for edit button
                 itemView.editInfoButton.setOnClickListener {
                     val refreshPageIntent = Intent(context,ServerEditActivity::class.java)
-                    refreshPageIntent.putExtra("pos",pos)
+                    refreshPageIntent.putExtra("serverName",serverInfo.name)
                     startActivity(context,refreshPageIntent,null)
                 }
 
@@ -63,7 +64,11 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
 
                     //Event handler for confirming delete
                     inflatedView.deleteYesButton.setOnClickListener {
-                        PlaceholderServerData.servers.removeAt(pos)
+                        val realm = Realm.getDefaultInstance()
+                        val results = realm.where<ServerModel>().equalTo("name",serverInfo.name).findAll()
+                        realm.executeTransaction {
+                            results.deleteAllFromRealm()
+                        }
                         popupWindow.dismiss()
                         val refreshPageIntent = Intent(context,ServerListActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -133,7 +138,7 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currServerInfo = serverList[position]
-        holder.setData(currServerInfo, position)
+        holder.setData(currServerInfo)
     }
 
 }
