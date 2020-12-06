@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/songName"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                android:ellipsize="end"
+                />
+            <TextView
+                android:id="@+id/songArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                android:ellipsize="end"
+            />
+            <TextView
+                android:id="@+id/songAlbum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                />
+            <TextView
+                android:id="@+id/songDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/upvoteButton"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_arrow_upward_24"
+            android:background="@drawable/shape_circle"
+            android:contentDescription="@string/upvote_this_song"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:id="@+id/songVoteCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_number"
+            android:layout_gravity="center_vertical"
+            android:textSize="25sp"
+            />
+        <ImageButton
+            android:id="@+id/downvoteButton"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_arrow_downward_24"
+            android:background="@drawable/shape_circle"
+            android:contentDescription="@string/downvote_this_song"
+            android:layout_gravity="center_vertical" />
+        <ImageButton
+            android:id="@+id/foldButton"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_unfold_more_24"
+            android:background="@drawable/shape_circle"
+            android:contentDescription="@string/see_more_info_about_this_song"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
