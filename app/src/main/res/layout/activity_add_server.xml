@@ -3,68 +3,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/addServerScreenHeader"
-        android:textAlignment="center"
-        android:textColor="@android:color/primary_text_light"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/editTextServerName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="@string/server_name_hint"
-        android:ems="10"
-        android:hint="@string/server_name_hint"
-        android:inputType="text" />
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/toolBar"
+        >
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/back_to_server_list" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/addServerScreenHeader"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+        <EditText
+            android:id="@+id/editTextServerName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/server_private_text" />
+            android:autofillHints="@string/server_name_hint"
+            android:ems="10"
+            android:hint="@string/server_name_hint"
+            android:inputType="text" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/serverPrivateSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:id="@+id/privateInfoButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/info_about_server_private_state"
-            app:srcCompat="@android:drawable/ic_menu_info_details" />
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/server_private_text" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/serverPrivateSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/privateInfoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/info_about_server_private_state"
+                app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editTextServerAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/server_address_hint"
+            android:ems="10"
+            android:hint="@string/server_address_hint"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/addServerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_server_button_text" />
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/editTextServerAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="@string/server_address_hint"
-        android:ems="10"
-        android:hint="@string/server_address_hint"
-        android:inputType="text" />
-
-    <Button
-        android:id="@+id/addServerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_server_button_text" />
 
 </LinearLayout>

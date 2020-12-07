@@ -14,6 +14,7 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add_server.*
@@ -23,13 +24,20 @@ import kotlinx.android.synthetic.main.activity_add_server.*
  */
 class ServerAddActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val realm = Realm.getDefaultInstance()
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         super.onCreate(savedInstanceState)
         //Set the server add layout
         setContentView(R.layout.activity_add_server)
 
+        //Make the "back" button act as expected
+        backButton.setOnClickListener {
+            val changePageIntent = Intent(this, ServerListActivity::class.java)
+            startActivity(changePageIntent)
+        }
+
         //Make the "add server" button act as expected
         addServerButton.setOnClickListener {
+            val realm = Realm.getDefaultInstance()
             val serverName: String = editTextServerName.text.toString()
             var serverAddress: String = editTextServerAddress.text.toString()
             if (!serverAddress.startsWith("http://") && !serverAddress.startsWith("https://")) {
@@ -38,34 +46,33 @@ class ServerAddActivity: AppCompatActivity() {
             val serverIsPrivate: Boolean = serverPrivateSwitch.isChecked
             var serverNetworkId: Int? = null
             if (serverIsPrivate) {
-                val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
                 if (wifiManager.isWifiEnabled) {
                     serverNetworkId = wifiManager.connectionInfo.networkId
                 }
             }
             when {
                 serverName.isEmpty() -> {
-                    displayMessage("Please enter a server name!")
+                    displayMessage(getString(R.string.server_name_empty_prompt))
                     serverNetworkId?.let { it1 -> displayMessage(it1.toString()) }
                 }
                 serverAddress.isEmpty() -> {
-                    displayMessage("Please enter a server address!")
+                    displayMessage(getString(R.string.server_address_empty_prompt))
                 }
                 realm.where<ServerModel>().equalTo("name",serverName)
                     .findAll()
                     .isNotEmpty() -> {
-                    displayMessage("Server name already in use!")
+                    displayMessage(getString(R.string.server_name_inuse_prompt))
                 }
                 (serverIsPrivate && serverNetworkId != null && realm.where<ServerModel>().equalTo("address",serverAddress)
                     .equalTo("wifiNetworkId",serverNetworkId)
                     .findAll()
                     .isNotEmpty()) -> {
-                    displayMessage("This server is already in your list!")
+                    displayMessage(getString(R.string.server_address_inuse_prompt))
                 }
                 (!serverIsPrivate && realm.where<ServerModel>().equalTo("address",serverAddress)
                     .findAll()
                     .isNotEmpty()) -> {
-                    displayMessage("This server is already in your list!")
+                    displayMessage(getString(R.string.server_address_inuse_prompt))
                 }
                 else -> {
                     realm.executeTransaction {

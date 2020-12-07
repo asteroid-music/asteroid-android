@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_add_server.*
  * Activity allowing the user to edit an existing server
  */
 class ServerEditActivity: AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Set the server add layout
@@ -28,11 +29,17 @@ class ServerEditActivity: AppCompatActivity() {
         textView.setText(R.string.edit_server_screen_header)
         addServerButton.setText(R.string.update_server_button_text)
 
+        //Make the "back" button act as expected
+        backButton.setOnClickListener {
+            val changePageIntent = Intent(this, ServerListActivity::class.java)
+            startActivity(changePageIntent)
+        }
+
         //Get the intent pos number
         intent.extras?.let {
-            val realm = Realm.getDefaultInstance()
             val serverName: String? = it.getString("serverName")
             serverName?.let {
+                val realm: Realm = Realm.getDefaultInstance()
                 val serverInfo = realm.where<ServerModel>().equalTo("name",serverName).findFirst()
                 serverInfo?.let {
                     //Put current server info into inputs
@@ -50,13 +57,13 @@ class ServerEditActivity: AppCompatActivity() {
                         val serverIsPrivate: Boolean = serverPrivateSwitch.isChecked
                         when {
                             newServerName.isEmpty() -> {
-                                displayMessage("Please enter a server name!")
+                                displayMessage(getString(R.string.server_name_empty_prompt))
                             }
                             serverAddress.isEmpty() -> {
-                                displayMessage("Please enter a server address!")
+                                displayMessage(getString(R.string.server_address_empty_prompt))
                             }
                             else -> {
-                                if (serverName !== newServerName) {
+                                if (serverName != newServerName) {
                                     realm.executeTransaction {
                                         //Add new object
                                         val newServerItem = realm.createObject<ServerModel>(newServerName)

@@ -27,4 +27,5 @@
     <string name="see_less_info_about_this_song">See less info about this song</string>
     <string name="all_songs_header">All Songs</string>
     <string name="see_more_info_about_this_song">See more info about this song</string>
+    <string name="back_to_server_list">Back to server list</string>
 </resources>
