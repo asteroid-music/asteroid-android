@@ -16,15 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_arrow_back_24"
+            android:layout_margin="8dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/back_to_server_list" />
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:text="@string/addServerScreenHeader"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />

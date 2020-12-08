@@ -16,9 +16,7 @@ import kotlinx.android.synthetic.main.activity_server_list.*
  */
 class ServerListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
         Realm.init(applicationContext)
-
         super.onCreate(savedInstanceState)
         //Set the server list layout
         setContentView(R.layout.activity_server_list)

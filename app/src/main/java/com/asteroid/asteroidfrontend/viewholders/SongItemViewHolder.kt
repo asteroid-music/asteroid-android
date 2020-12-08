@@ -99,9 +99,6 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                     it.background = circle
                 }
             }
-            itemView.setOnClickListener {
-                setUnfoldedState(songInfo,true)
-            }
         }
     }
 
@@ -123,6 +120,9 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             itemView.foldButton.setOnClickListener {
                 setUnfoldedState(songInfo, false)
             }
+            itemView.setOnClickListener {
+                setUnfoldedState(songInfo,false)
+            }
         } else {
             itemView.songName.isSingleLine = true
             itemView.songArtist.isSingleLine = true
@@ -134,6 +134,9 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             itemView.foldButton.contentDescription = R.string.see_more_info_about_this_song.toString()
             itemView.foldButton.setOnClickListener {
                 setUnfoldedState(songInfo, true)
+            }
+            itemView.setOnClickListener {
+                setUnfoldedState(songInfo,true)
             }
         }
     }

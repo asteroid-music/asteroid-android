@@ -14,7 +14,6 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
 import io.realm.Realm
-import io.realm.RealmConfiguration
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add_server.*

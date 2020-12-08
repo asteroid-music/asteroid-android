@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.activities.ServerEditActivity
 import com.asteroid.asteroidfrontend.activities.ServerListActivity
+import com.asteroid.asteroidfrontend.activities.SongListActivity
 import com.asteroid.asteroidfrontend.models.HealthCheck
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.services.ServerStatusInterface
@@ -42,7 +43,14 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
 
                 //Set up server address
                 val reducedAddress: String = it.address.removePrefix("http://").removePrefix("https://")
-                itemView.serverItemAddress.text = if(reducedAddress.length > 15) reducedAddress.substring(0,12).plus("...") else reducedAddress
+                itemView.serverItemAddress.text = reducedAddress
+
+                //Set up default click event handler
+                itemView.setOnClickListener {
+                    val refreshPageIntent = Intent(context,SongListActivity::class.java)
+                    refreshPageIntent.putExtra("serverName",serverInfo.name)
+                    startActivity(context,refreshPageIntent,null)
+                }
 
                 //Set up event handler for edit button
                 itemView.editInfoButton.setOnClickListener {
