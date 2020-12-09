@@ -7,7 +7,7 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.SongListAdapter
-import com.asteroid.asteroidfrontend.displayMessage
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.models.SongModel
 import com.asteroid.asteroidfrontend.services.ServiceBuilder

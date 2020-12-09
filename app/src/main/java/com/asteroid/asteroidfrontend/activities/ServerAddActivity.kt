@@ -11,11 +11,9 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.displayMessage
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.utils.ServerTools
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import io.realm.Realm
-import io.realm.kotlin.createObject
-import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add_server.*
 
 /**
@@ -49,40 +47,12 @@ class ServerAddActivity: AppCompatActivity() {
                     serverNetworkId = wifiManager.connectionInfo.networkId
                 }
             }
-            when {
-                serverName.isEmpty() -> {
-                    displayMessage(getString(R.string.server_name_empty_prompt))
-                    serverNetworkId?.let { it1 -> displayMessage(it1.toString()) }
-                }
-                serverAddress.isEmpty() -> {
-                    displayMessage(getString(R.string.server_address_empty_prompt))
-                }
-                realm.where<ServerModel>().equalTo("name",serverName)
-                    .findAll()
-                    .isNotEmpty() -> {
-                    displayMessage(getString(R.string.server_name_inuse_prompt))
-                }
-                (serverIsPrivate && serverNetworkId != null && realm.where<ServerModel>().equalTo("address",serverAddress)
-                    .equalTo("wifiNetworkId",serverNetworkId)
-                    .findAll()
-                    .isNotEmpty()) -> {
-                    displayMessage(getString(R.string.server_address_inuse_prompt))
-                }
-                (!serverIsPrivate && realm.where<ServerModel>().equalTo("address",serverAddress)
-                    .findAll()
-                    .isNotEmpty()) -> {
-                    displayMessage(getString(R.string.server_address_inuse_prompt))
-                }
-                else -> {
-                    realm.executeTransaction {
-                        val newServerItem = realm.createObject<ServerModel>(serverName)
-                        newServerItem.address = serverAddress
-                        newServerItem.local = serverIsPrivate
-                        newServerItem.wifiNetworkId = serverNetworkId
-                    }
-                    val changePageIntent = Intent(this, ServerListActivity::class.java)
-                    startActivity(changePageIntent)
-                }
+            val result = ServerTools.addNewServer(realm,serverName,serverAddress,serverIsPrivate,serverNetworkId)
+            if (result.success) {
+                val changePageIntent = Intent(this, ServerListActivity::class.java)
+                startActivity(changePageIntent)
+            } else {
+                displayMessage(getString(result.messageId))
             }
         }
 

@@ -19,8 +19,8 @@
     <string name="literal_no">No</string>
     <string name="server_name_empty_prompt">Please enter a server name!</string>
     <string name="server_address_empty_prompt">Please enter a server address!</string>
-    <string name="server_name_inuse_prompt">Server name already in use!</string>
-    <string name="server_address_inuse_prompt">This server is already in your list!</string>
+    <string name="server_name_in_use_prompt">Server name already in use!</string>
+    <string name="server_address_in_use_prompt">This server is already in your list!</string>
     <string name="upvote_this_song">Upvote this song</string>
     <string name="downvote_this_song">Downvote this song</string>
     <string name="placeholder_number">0</string>

@@ -8,7 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.displayMessage
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.Message
 import com.asteroid.asteroidfrontend.models.SongModel
 import com.asteroid.asteroidfrontend.services.QueueInterface

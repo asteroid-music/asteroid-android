@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.displayMessage
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
 import io.realm.Realm
 import io.realm.kotlin.createObject

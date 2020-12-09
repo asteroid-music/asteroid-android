@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend
+package com.asteroid.asteroidfrontend.utils
 
 import android.content.Context
 import android.widget.Toast
