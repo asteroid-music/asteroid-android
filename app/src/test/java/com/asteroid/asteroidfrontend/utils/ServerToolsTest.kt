@@ -48,9 +48,32 @@ class ServerToolsTest {
         every { newQueryMock.findAll() } answers {
             val results = mockk<RealmResults<ServerModel>>()
             every { results.isEmpty() } returns serverList.isEmpty()
+            every { results.deleteAllFromRealm() } answers {
+                if (serverList.isEmpty()) {
+                    throw Error("deleteAllFromRealm called with no items")
+                }
+                true
+            }
             results
         }
         return newQueryMock
+    }
+
+    private fun addMockAdditionMethods(realm: Realm, model: ServerModel) {
+        val stringSlot = slot<String>()
+        every { realm.createObject<ServerModel>(capture(stringSlot)) } answers {
+            model.name = stringSlot.captured
+            model
+        }
+        val modelSlot = slot<ServerModel>()
+        every {realm.copyToRealmOrUpdate<ServerModel>(capture(modelSlot))} answers {
+            val newModel = modelSlot.captured
+            model.name = newModel.name
+            model.address = newModel.address
+            model.local = newModel.local
+            model.wifiNetworkId = newModel.wifiNetworkId
+            model
+        }
     }
 
     @Before
@@ -67,11 +90,7 @@ class ServerToolsTest {
     @Test
     fun addNewServer_freshInput_succeeds() {
         val emptyServerModel = ServerModel()
-        val stringSlot = slot<String>()
-        every { mockRealm.createObject<ServerModel>(capture(stringSlot)) } answers {
-            emptyServerModel.name = stringSlot.captured
-            emptyServerModel
-        }
+        addMockAdditionMethods(mockRealm,emptyServerModel)
         val response = ServerTools.addNewServer(mockRealm,VALID_SERVER_NAME,VALID_SERVER_ADDRESS,false)
         assertTrue("Response indicated failure - success expected", response.success)
         verify { mockRealm.executeTransaction(any()) }
@@ -119,11 +138,7 @@ class ServerToolsTest {
     @Test
     fun addNewServer_inUseLocalAddressDifferentID_succeeds() {
         val emptyServerModel = ServerModel()
-        val stringSlot = slot<String>()
-        every { mockRealm.createObject<ServerModel>(capture(stringSlot)) } answers {
-            emptyServerModel.name = stringSlot.captured
-            emptyServerModel
-        }
+        addMockAdditionMethods(mockRealm,emptyServerModel)
         val response = ServerTools.addNewServer(mockRealm,VALID_SERVER_NAME,IN_USE_LOCAL_SERVER_ADDRESS,true, IN_USE_LOCAL_SERVER_ID+1)
         assertTrue(response.success)
         verify { mockRealm.executeTransaction(any()) }
@@ -136,6 +151,58 @@ class ServerToolsTest {
         assertTrue(failureString, emptyServerModel.address == IN_USE_LOCAL_SERVER_ADDRESS)
         assertTrue(failureString, emptyServerModel.local)
         assertTrue(failureString, emptyServerModel.wifiNetworkId == IN_USE_LOCAL_SERVER_ID+1)
+    }
+
+    @Test
+    fun updateExistingServer_missingName_fails() {
+        val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, "",VALID_SERVER_ADDRESS,false)
+        assertTrue(Response(  false, R.string.server_name_empty_prompt) == response)        
+    }
+
+    @Test
+    fun updateExistingServer_missingAddress_fails() {
+        val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, VALID_SERVER_NAME,"",false)
+        assertTrue(Response(  false, R.string.server_address_empty_prompt) == response)
+    }
+
+    @Test
+    fun updateExistingServer_unknownOldName_fails() {
+        val response = ServerTools.updateExistingServer(mockRealm,VALID_SERVER_NAME, VALID_SERVER_NAME,VALID_SERVER_ADDRESS,false)
+        assertTrue(Response(  false, R.string.server_name_not_recognised) == response)
+    }
+
+    @Test
+    fun updateExistingServer_validSameName_succeeds() {
+        val emptyServerModel = ServerModel()
+        addMockAdditionMethods(mockRealm,emptyServerModel)
+        val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, IN_USE_SERVER_NAME,VALID_SERVER_ADDRESS,false)
+        assertTrue(response.success)
+        val failureString = "\t | \t expected ServerModel \t | \t received ServerModel \n"
+            .plus("Name \t | \t").plus(IN_USE_SERVER_NAME).plus(" \t | \t ").plus(emptyServerModel.name).plus("\n")
+            .plus("Address \t | \t").plus(VALID_SERVER_ADDRESS).plus(" \t | \t ").plus(emptyServerModel.address).plus("\n")
+            .plus("Local \t | \t").plus(false).plus(" \t | \t ").plus(emptyServerModel.local).plus("\n")
+            .plus("WifiId \t | \t").plus(null).plus(" \t | \t ").plus(emptyServerModel.wifiNetworkId).plus("\n")
+        assertTrue(failureString, emptyServerModel.name == IN_USE_SERVER_NAME)
+        assertTrue(failureString, emptyServerModel.address == VALID_SERVER_ADDRESS)
+        assertTrue(failureString, !emptyServerModel.local)
+        assertTrue(failureString, emptyServerModel.wifiNetworkId == null)
+    }
+
+    @Test
+    fun updateExistingServer_validDifferentName_succeeds() {
+        val emptyServerModel = ServerModel()
+        addMockAdditionMethods(mockRealm,emptyServerModel)
+        val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, VALID_SERVER_NAME,VALID_SERVER_ADDRESS,false)
+        assertTrue(response.success)
+        val failureString = "\t | \t expected ServerModel \t | \t received ServerModel \n"
+            .plus("Name \t | \t").plus(VALID_SERVER_NAME).plus(" \t | \t ").plus(emptyServerModel.name).plus("\n")
+            .plus("Address \t | \t").plus(VALID_SERVER_ADDRESS).plus(" \t | \t ").plus(emptyServerModel.address).plus("\n")
+            .plus("Local \t | \t").plus(false).plus(" \t | \t ").plus(emptyServerModel.local).plus("\n")
+            .plus("WifiId \t | \t").plus(null).plus(" \t | \t ").plus(emptyServerModel.wifiNetworkId).plus("\n")
+        assertTrue(failureString, emptyServerModel.name == VALID_SERVER_NAME)
+        assertTrue(failureString, emptyServerModel.address == VALID_SERVER_ADDRESS)
+        assertTrue(failureString, !emptyServerModel.local)
+        assertTrue(failureString, emptyServerModel.wifiNetworkId == null)
     }
 
 }

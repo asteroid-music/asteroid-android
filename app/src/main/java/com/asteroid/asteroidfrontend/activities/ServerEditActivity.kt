@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.utils.ServerTools
 import io.realm.Realm
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
@@ -55,42 +56,11 @@ class ServerEditActivity: AppCompatActivity() {
                             serverAddress = "http://".plus(serverAddress)
                         }
                         val serverIsPrivate: Boolean = serverPrivateSwitch.isChecked
-                        when {
-                            newServerName.isEmpty() -> {
-                                displayMessage(getString(R.string.server_name_empty_prompt))
-                            }
-                            serverAddress.isEmpty() -> {
-                                displayMessage(getString(R.string.server_address_empty_prompt))
-                            }
-                            else -> {
-                                if (serverName != newServerName) {
-                                    realm.executeTransaction {
-                                        //Add new object
-                                        val newServerItem = realm.createObject<ServerModel>(newServerName)
-                                        newServerItem.address = serverAddress
-                                        newServerItem.local = serverIsPrivate
-                                        newServerItem.wifiNetworkId = serverInfo.wifiNetworkId
-                                        //Delete old object
-                                        realm.where<ServerModel>().equalTo("name",serverName)
-                                            .findAll()
-                                            .deleteAllFromRealm()
-                                    }
-                                } else {
-                                    realm.executeTransaction {
-                                        realm.copyToRealmOrUpdate(
-                                            ServerModel(
-                                                newServerName,
-                                                serverAddress,
-                                                serverIsPrivate,
-                                                serverInfo.wifiNetworkId
-                                            )
-                                        )
-                                    }
-                                }
-                                val changePageIntent = Intent(this, ServerListActivity::class.java)
-                                startActivity(changePageIntent)
-                            }
-                        }
+                        val result = ServerTools.updateExistingServer(realm,serverName,newServerName,serverAddress,serverIsPrivate,serverInfo.wifiNetworkId)
+                        if (result.success) {
+                            val changePageIntent = Intent(this, ServerListActivity::class.java)
+                            startActivity(changePageIntent)
+                        } else displayMessage(getString(result.messageId))
                     }
 
                     //Make the "public/private info" button act as expected

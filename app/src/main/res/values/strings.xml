@@ -33,4 +33,5 @@
     <string name="menu_section_voting">Voting</string>
     <string name="menu_subsection_song_list">Song List</string>
     <string name="return_to_server_list">Return To Server List</string>
+    <string name="server_name_not_recognised">Server name not recognised</string>
 </resources>
