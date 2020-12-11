@@ -66,7 +66,7 @@ class ServerToolsTest {
             model
         }
         val modelSlot = slot<ServerModel>()
-        every {realm.copyToRealmOrUpdate<ServerModel>(capture(modelSlot))} answers {
+        every {realm.copyToRealmOrUpdate(capture(modelSlot))} answers {
             val newModel = modelSlot.captured
             model.name = newModel.name
             model.address = newModel.address

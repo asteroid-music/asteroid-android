@@ -5,5 +5,6 @@ data class SongModel(
     var song: String,
     var duration: Number,
     var album: String,
-    var _id: String
+    var _id: String,
+    var votes: Int?
 )

@@ -9,11 +9,10 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.utils.ServerTools
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import io.realm.Realm
-import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add_server.*
 

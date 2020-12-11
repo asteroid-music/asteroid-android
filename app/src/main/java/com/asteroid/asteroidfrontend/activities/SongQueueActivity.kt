@@ -6,15 +6,15 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.SongListAdapter
+import com.asteroid.asteroidfrontend.models.QueueModel
 import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
-import com.asteroid.asteroidfrontend.models.SongModel
+import com.asteroid.asteroidfrontend.services.QueueInterface
 import com.asteroid.asteroidfrontend.services.ServiceBuilder
-import com.asteroid.asteroidfrontend.services.SongListInterface
 import com.asteroid.asteroidfrontend.utils.NavTools
 import io.realm.Realm
 import io.realm.kotlin.where
-import kotlinx.android.synthetic.main.activity_song_list.*
+import kotlinx.android.synthetic.main.activity_queue.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,7 +22,7 @@ import retrofit2.Response
 /**
  * Activity showing a list of songs
  */
-class SongListActivity : AppCompatActivity() {
+class SongQueueActivity : AppCompatActivity() {
     var realm: Realm = Realm.getDefaultInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,21 +31,24 @@ class SongListActivity : AppCompatActivity() {
         setSupportActionBar(toolBar)
 
         //Set the server list layout
-        setContentView(R.layout.activity_song_list)
+        setContentView(R.layout.activity_queue)
+
+        //Set the currently playing text
+        currentSong.text = getString(R.string.currently_playing).plus("Unknown")
 
         //Set up the menu button
         menuButton.setOnClickListener {
-            activitySongList.openDrawer(GravityCompat.START,true)
+            activityQueue.openDrawer(GravityCompat.START,true)
         }
 
         //Set up the refresh button
-        refreshSongListButton.setOnClickListener {
+        refreshQueueButton.setOnClickListener {
             refreshRecyclerView()
         }
 
         val serverName: String? = intent.extras?.getString("serverName")
         //Set the navigation menu up
-        NavTools.setupNavBar(serverName,navView,this,R.id.navSongList, activitySongList) {
+        NavTools.setupNavBar(serverName,navView,this,R.id.navQueue, activityQueue) {
             refreshRecyclerView()
         }
 
@@ -63,32 +66,37 @@ class SongListActivity : AppCompatActivity() {
             serverName?.let {
                 val serverInfo = realm.where<ServerModel>().equalTo("name",serverName).findFirst()
                 serverInfo?.let {
-                    //GET the song list
-                    val songListService = ServiceBuilder.buildService(SongListInterface::class.java)
-                    val requestCall = songListService.getSongList(serverInfo.address.plus("/music/songs"))
-                    requestCall.enqueue(object: Callback<List<SongModel>> {
-                        override fun onFailure(call: Call<List<SongModel>>, t: Throwable) {
-                            displayMessage("Unable to load song list!")
+                    //GET the queue
+                    val queueService = ServiceBuilder.buildService(QueueInterface::class.java)
+                    val requestCall = queueService.getQueue(serverInfo.address.plus("/queue"))
+                    requestCall.enqueue(object: Callback<QueueModel> {
+                        override fun onFailure(call: Call<QueueModel>, t: Throwable) {
+                            displayMessage("Unable to load queue!")
                         }
 
 
                         override fun onResponse(
-                            call: Call<List<SongModel>>,
-                            response: Response<List<SongModel>>
+                            call: Call<QueueModel>,
+                            response: Response<QueueModel>
                         ) {
                             if (response.isSuccessful) {
                                 response.body()?.let { body ->
                                     //Create a vertical linear layout manager and apply it to the recyclerView
-                                    val layoutManager = LinearLayoutManager(this@SongListActivity)
+                                    val layoutManager = LinearLayoutManager(this@SongQueueActivity)
                                     layoutManager.orientation = LinearLayoutManager.VERTICAL
                                     recyclerView.layoutManager = layoutManager
 
+                                    val songList = body.songs.map { item ->
+                                        item.song.votes = item.votes
+                                        item.song
+                                    }.sortedByDescending { item -> item.votes }
+
                                     //Create an instance of the server list adapter and apply it to the recyclerView
-                                    val adapter = SongListAdapter(serverInfo.address, this@SongListActivity, body)
+                                    val adapter = SongListAdapter(serverInfo.address, this@SongQueueActivity, songList)
                                     recyclerView.adapter = adapter
                                 }
                             } else {
-                                displayMessage("Unable to load song list!")
+                                displayMessage("Unable to load queue!")
                             }
                         }
                     })

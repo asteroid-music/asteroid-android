@@ -20,7 +20,7 @@ import retrofit2.Response
 import kotlin.math.floor
 
 class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    fun setData(serverAddress: String, songInfo: SongModel?, voteCount: Number?=null, voteButtons: Boolean=false, unfolded: Boolean=false) {
+    fun setData(serverAddress: String, songInfo: SongModel?, voteButtons: Boolean=false, unfolded: Boolean=false) {
         songInfo?.let {
             itemView.songName.text = songInfo.song
             setUnfoldedState(songInfo,unfolded)
@@ -28,17 +28,23 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 itemView.upvoteButton.visibility = View.GONE
                 itemView.downvoteButton.visibility = View.GONE
             }
-            if(voteCount == null) {
+            if(songInfo.votes == null) {
                 itemView.songVoteCount.text = ""
             } else {
-                itemView.songVoteCount.text = voteCount.toString()
+                itemView.songVoteCount.text = songInfo.votes.toString()
             }
             itemView.upvoteButton.setOnClickListener {
                 val voteService = ServiceBuilder.buildService(QueueInterface::class.java)
                 val requestCall = voteService.postQueue(serverAddress.plus("/queue/"),songInfo._id,1)
+                songInfo.votes?.let { votes ->
+                    itemView.songVoteCount.text = (votes + 1).toString()
+                }
                 requestCall.enqueue(object: Callback<Message> {
                     override fun onFailure(call: Call<Message>, t: Throwable) {
                         itemView.context.displayMessage("onFailure")
+                        songInfo.votes?.let { votes ->
+                            itemView.songVoteCount.text = votes.toString()
+                        }
                         val circle: Drawable? = ContextCompat.getDrawable(itemView.context, R.drawable.shape_circle)
                         circle?.let{_ ->
                             circle.colorFilter = PorterDuffColorFilter(Color.parseColor("#ffffff"),PorterDuff.Mode.MULTIPLY)
@@ -51,6 +57,9 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                         response: Response<Message>
                     ) {
                         if (!response.isSuccessful) {
+                            songInfo.votes?.let { votes ->
+                                itemView.songVoteCount.text = votes.toString()
+                            }
                             itemView.context.displayMessage("onResponse code ".plus(response.code()))
                             val circle: Drawable? = ContextCompat.getDrawable(itemView.context, R.drawable.shape_circle)
                             circle?.let{_ ->
@@ -69,9 +78,15 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             itemView.downvoteButton.setOnClickListener {
                 val voteService = ServiceBuilder.buildService(QueueInterface::class.java)
                 val requestCall = voteService.postQueue(serverAddress.plus("/queue/"),songInfo._id,-1)
+                songInfo.votes?.let { votes ->
+                    itemView.songVoteCount.text = (votes - 1).toString()
+                }
                 requestCall.enqueue(object: Callback<Message> {
                     override fun onFailure(call: Call<Message>, t: Throwable) {
                         itemView.context.displayMessage("Failed to downvote song!")
+                        songInfo.votes?.let { votes ->
+                            itemView.songVoteCount.text = votes.toString()
+                        }
                         val circle: Drawable? = ContextCompat.getDrawable(itemView.context, R.drawable.shape_circle)
                         circle?.let{_ ->
                             circle.colorFilter = PorterDuffColorFilter(Color.parseColor("#ffffff"),PorterDuff.Mode.MULTIPLY)
@@ -85,6 +100,9 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                     ) {
                         if (!response.isSuccessful) {
                             itemView.context.displayMessage("Failed to downvote song!")
+                            songInfo.votes?.let { votes ->
+                                itemView.songVoteCount.text = votes.toString()
+                            }
                             val circle: Drawable? = ContextCompat.getDrawable(itemView.context, R.drawable.shape_circle)
                             circle?.let{_ ->
                                 circle.colorFilter = PorterDuffColorFilter(Color.parseColor("#ffffff"),PorterDuff.Mode.MULTIPLY)

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.activities.ServerEditActivity
 import com.asteroid.asteroidfrontend.activities.ServerListActivity
-import com.asteroid.asteroidfrontend.activities.SongListActivity
+import com.asteroid.asteroidfrontend.activities.SongQueueActivity
 import com.asteroid.asteroidfrontend.models.HealthCheck
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.services.ServerStatusInterface
@@ -47,7 +47,7 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
 
                 //Set up default click event handler
                 itemView.setOnClickListener {
-                    val refreshPageIntent = Intent(context,SongListActivity::class.java)
+                    val refreshPageIntent = Intent(context, SongQueueActivity::class.java)
                     refreshPageIntent.putExtra("serverName",serverInfo.name)
                     startActivity(context,refreshPageIntent,null)
                 }

@@ -34,4 +34,8 @@
     <string name="menu_subsection_song_list">Song List</string>
     <string name="return_to_server_list">Return To Server List</string>
     <string name="server_name_not_recognised">Server name not recognised</string>
+    <string name="queue_header">Queue</string>
+    <string name="refresh_queue">Refresh queue</string>
+    <string name="menu_subsection_queue">Queue</string>
+    <string name="currently_playing">Currently playing: </string>
 </resources>

@@ -6,13 +6,16 @@
     <item android:title="@string/menu_section_voting">
         <menu>
             <item
+                android:id="@+id/navQueue"
+                android:title="@string/menu_subsection_queue" />
+            <item
                 android:id="@+id/navSongList"
-                android:title="@string/menu_subsection_song_list"/>
+                android:title="@string/menu_subsection_song_list" />
         </menu>
     </item>
 
 
     <item
         android:id="@+id/navServerList"
-        android:title="@string/return_to_server_list"/>
+        android:title="@string/return_to_server_list" />
 </menu>

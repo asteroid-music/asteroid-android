@@ -6,19 +6,20 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:id="@+id/toolBar"
-        >
+        android:background="?attr/colorPrimary">
+
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_back_24"
             android:layout_margin="8dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/back_to_server_list" />
+            android:contentDescription="@string/back_to_server_list"
+            android:src="@drawable/ic_baseline_arrow_back_24" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
@@ -32,8 +33,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
         <EditText
             android:id="@+id/editTextServerName"
             android:layout_width="match_parent"

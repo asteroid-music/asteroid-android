@@ -16,43 +16,43 @@
             android:id="@+id/serverItemTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/placeholder"
-            android:textSize="20sp"
-            android:layout_weight="1"/>
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/serverItemAddress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
             android:fontFamily="serif-monospace"
             android:gravity="center_vertical"
             android:paddingStart="5dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="@string/placeholder"
-            android:layout_weight="1"
             android:singleLine="true"
-            android:ellipsize="end"/>
+            android:text="@string/placeholder" />
 
         <ImageButton
             android:id="@+id/editInfoButton"
             android:layout_width="30sp"
             android:layout_height="30sp"
-            android:scaleType="fitXY"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
             android:contentDescription="@string/info_about_server_private_state"
+            android:scaleType="fitXY"
             card_view:srcCompat="@android:drawable/ic_menu_edit" />
 
         <ImageButton
             android:id="@+id/deleteServerButton"
             android:layout_width="30sp"
             android:layout_height="30sp"
-            android:scaleType="fitXY"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
             android:contentDescription="@string/info_about_server_private_state"
+            android:scaleType="fitXY"
             card_view:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ProgressBar

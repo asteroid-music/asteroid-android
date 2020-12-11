@@ -22,6 +22,7 @@
         <activity android:name=".activities.ServerAddActivity" />
         <activity android:name=".activities.ServerEditActivity" />
         <activity android:name=".activities.SongListActivity" />
+        <activity android:name=".activities.SongQueueActivity" />
     </application>
 
 </manifest>
