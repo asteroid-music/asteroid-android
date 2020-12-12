@@ -38,4 +38,23 @@
     <string name="refresh_queue">Refresh queue</string>
     <string name="menu_subsection_queue">Queue</string>
     <string name="currently_playing">Currently playing: </string>
+    <string name="menu_section_request">Request</string>
+    <string name="menu_subsection_url_request">URL Request</string>
+    <string name="menu_section_about">About</string>
+    <string name="menu_subsection_credits">Credits</string>
+    <string name="url_request_header">URL Request</string>
+    <string name="make_request">Make request</string>
+    <string name="url_request_hint">Enter URL here…</string>
+    <string name="credits_header">Credits</string>
+    <string name="credits_text">
+        Asteroid built by <a href="https://github.com/dustpancake">
+            Fergus Baker
+        </a> and <a href="https://github.com/JR-Mitchell">
+            JR Mitchell
+        </a> <br />
+        GitHub repo at:
+        <a href="https://github.com/asteroid-music">
+            asteroid-music
+        </a>
+    </string>
 </resources>

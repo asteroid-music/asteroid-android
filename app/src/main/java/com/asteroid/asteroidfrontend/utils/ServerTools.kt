@@ -1,5 +1,6 @@
 package com.asteroid.asteroidfrontend.utils
 
+import android.content.Context
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.models.Response
 import com.asteroid.asteroidfrontend.models.ServerModel
@@ -8,6 +9,15 @@ import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 
 object ServerTools {
+
+    fun getRealmInstance(context: Context): Realm {
+        return try {
+            Realm.getDefaultInstance()
+        } catch (e: Exception) {
+            Realm.init(context)
+            Realm.getDefaultInstance()
+        }
+    }
 
     /**
      * Adds a new server to the specified realm, if valid

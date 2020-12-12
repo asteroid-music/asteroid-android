@@ -7,9 +7,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.activities.ServerListActivity
-import com.asteroid.asteroidfrontend.activities.SongListActivity
-import com.asteroid.asteroidfrontend.activities.SongQueueActivity
+import com.asteroid.asteroidfrontend.activities.*
 import com.google.android.material.navigation.NavigationView
 
 object NavTools {
@@ -33,6 +31,9 @@ object NavTools {
      * @param thisTabCallback: method to call when the menu item for the current activity is pressed
      */
     fun setupNavBar(serverName: String?, navView: NavigationView, context: Context, currentId: Int, drawerLayout: DrawerLayout, thisTabCallback: () -> Unit) {
+        navView.menu.findItem(R.id.navMenuTitle)?.let {
+            it.title = serverName
+        }
         navView.setCheckedItem(currentId)
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -43,6 +44,8 @@ object NavTools {
                 R.id.navServerList -> startInServerActivity(null,context,ServerListActivity::class.java)
                 R.id.navSongList -> startInServerActivity(serverName,context,SongListActivity::class.java)
                 R.id.navQueue -> startInServerActivity(serverName,context,SongQueueActivity::class.java)
+                R.id.navUrlReq -> startInServerActivity(serverName,context, URLRequestActivity::class.java)
+                R.id.navCredits -> startInServerActivity(serverName,context, CreditsActivity::class.java)
             }
             true
         }

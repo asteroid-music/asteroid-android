@@ -1,18 +1,23 @@
 package com.asteroid.asteroidfrontend.activities
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.SongListAdapter
-import com.asteroid.asteroidfrontend.utils.displayMessage
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.models.SongModel
 import com.asteroid.asteroidfrontend.services.ServiceBuilder
 import com.asteroid.asteroidfrontend.services.SongListInterface
 import com.asteroid.asteroidfrontend.utils.NavTools
-import io.realm.Realm
+import com.asteroid.asteroidfrontend.utils.ServerTools
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_song_list.*
 import retrofit2.Call
@@ -23,8 +28,6 @@ import retrofit2.Response
  * Activity showing a list of songs
  */
 class SongListActivity : AppCompatActivity() {
-    var realm: Realm = Realm.getDefaultInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,38 +64,56 @@ class SongListActivity : AppCompatActivity() {
         intent.extras?.let {
             val serverName: String? = it.getString("serverName")
             serverName?.let {
+                val realm = ServerTools.getRealmInstance(this)
                 val serverInfo = realm.where<ServerModel>().equalTo("name",serverName).findFirst()
                 serverInfo?.let {
                     //GET the song list
                     val songListService = ServiceBuilder.buildService(SongListInterface::class.java)
                     val requestCall = songListService.getSongList(serverInfo.address.plus("/music/songs"))
-                    requestCall.enqueue(object: Callback<List<SongModel>> {
-                        override fun onFailure(call: Call<List<SongModel>>, t: Throwable) {
-                            displayMessage("Unable to load song list!")
-                        }
-
-
-                        override fun onResponse(
-                            call: Call<List<SongModel>>,
-                            response: Response<List<SongModel>>
-                        ) {
-                            if (response.isSuccessful) {
-                                response.body()?.let { body ->
-                                    //Create a vertical linear layout manager and apply it to the recyclerView
-                                    val layoutManager = LinearLayoutManager(this@SongListActivity)
-                                    layoutManager.orientation = LinearLayoutManager.VERTICAL
-                                    recyclerView.layoutManager = layoutManager
-
-                                    //Create an instance of the server list adapter and apply it to the recyclerView
-                                    val adapter = SongListAdapter(serverInfo.address, this@SongListActivity, body)
-                                    recyclerView.adapter = adapter
-                                }
-                            } else {
+                    activitySongList.post {
+                        val inflatedView: View =
+                            LayoutInflater.from(this).inflate(R.layout.loading_popup, null)
+                        val window = PopupWindow(
+                            inflatedView,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            true
+                        )
+                        window.showAtLocation(activitySongList, Gravity.CENTER, 0, 0)
+                        requestCall.enqueue(object : Callback<List<SongModel>> {
+                            override fun onFailure(call: Call<List<SongModel>>, t: Throwable) {
+                                window.dismiss()
                                 displayMessage("Unable to load song list!")
                             }
-                        }
-                    })
 
+
+                            override fun onResponse(
+                                call: Call<List<SongModel>>,
+                                response: Response<List<SongModel>>
+                            ) {
+                                window.dismiss()
+                                if (response.isSuccessful) {
+                                    response.body()?.let { body ->
+                                        //Create a vertical linear layout manager and apply it to the recyclerView
+                                        val layoutManager =
+                                            LinearLayoutManager(this@SongListActivity)
+                                        layoutManager.orientation = LinearLayoutManager.VERTICAL
+                                        recyclerView.layoutManager = layoutManager
+
+                                        //Create an instance of the server list adapter and apply it to the recyclerView
+                                        val adapter = SongListAdapter(
+                                            serverInfo.address,
+                                            this@SongListActivity,
+                                            body
+                                        )
+                                        recyclerView.adapter = adapter
+                                    }
+                                } else {
+                                    displayMessage("Unable to load song list!")
+                                }
+                            }
+                        })
+                    }
                 }
             }
         }

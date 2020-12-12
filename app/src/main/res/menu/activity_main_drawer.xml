@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+    <item android:title="@string/placeholder"
+        android:id="@+id/navMenuTitle" />
+
     <item android:title="@string/menu_section_voting">
         <menu>
             <item
@@ -14,6 +17,21 @@
         </menu>
     </item>
 
+    <item android:title="@string/menu_section_request">
+        <menu>
+            <item
+                android:id="@+id/navUrlReq"
+                android:title="@string/menu_subsection_url_request" />
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_section_about">
+        <menu>
+            <item
+                android:id="@+id/navCredits"
+                android:title="@string/menu_subsection_credits" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/navServerList"

@@ -12,7 +12,6 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
-import io.realm.Realm
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add_server.*
 
@@ -39,7 +38,7 @@ class ServerEditActivity: AppCompatActivity() {
         intent.extras?.let {
             val serverName: String? = it.getString("serverName")
             serverName?.let {
-                val realm: Realm = Realm.getDefaultInstance()
+                val realm = ServerTools.getRealmInstance(this)
                 val serverInfo = realm.where<ServerModel>().equalTo("name",serverName).findFirst()
                 serverInfo?.let {
                     //Put current server info into inputs

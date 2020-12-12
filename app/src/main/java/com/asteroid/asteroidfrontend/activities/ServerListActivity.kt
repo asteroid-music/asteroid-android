@@ -1,13 +1,13 @@
 package com.asteroid.asteroidfrontend.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.ServerListAdapter
 import com.asteroid.asteroidfrontend.models.ServerModel
-import io.realm.Realm
+import com.asteroid.asteroidfrontend.utils.ServerTools
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_server_list.*
 
@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_server_list.*
  */
 class ServerListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Realm.init(applicationContext)
         super.onCreate(savedInstanceState)
         //Set the server list layout
         setContentView(R.layout.activity_server_list)
@@ -36,7 +35,7 @@ class ServerListActivity : AppCompatActivity() {
     }
 
     private fun refreshRecyclerView() {
-        val realm = Realm.getDefaultInstance()
+        val realm = ServerTools.getRealmInstance(this)
 
         //Create a vertical linear layout manager and apply it to the recyclerView
         val layoutManager = LinearLayoutManager(this)

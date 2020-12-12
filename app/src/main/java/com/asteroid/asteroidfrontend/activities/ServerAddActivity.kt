@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
-import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_add_server.*
 
 /**
@@ -34,7 +33,7 @@ class ServerAddActivity: AppCompatActivity() {
 
         //Make the "add server" button act as expected
         addServerButton.setOnClickListener {
-            val realm = Realm.getDefaultInstance()
+            val realm = ServerTools.getRealmInstance(this)
             val serverName: String = editTextServerName.text.toString()
             var serverAddress: String = editTextServerAddress.text.toString()
             if (!serverAddress.startsWith("http://") && !serverAddress.startsWith("https://")) {
@@ -58,7 +57,7 @@ class ServerAddActivity: AppCompatActivity() {
 
         //Make the "public/private info" button act as expected
         privateInfoButton.setOnClickListener {
-            val inflatedView: View = LayoutInflater.from(applicationContext).inflate(R.layout.server_private_state_info,LinearLayout(parent),false)
+            val inflatedView: View = LayoutInflater.from(this).inflate(R.layout.server_private_state_info,LinearLayout(parent),false)
             PopupWindow(
                 inflatedView,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
