@@ -57,4 +57,5 @@
             asteroid-music
         </a>
     </string>
+    <string name="url_share_external_hint">Server to share URL to:</string>
 </resources>

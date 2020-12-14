@@ -45,6 +45,13 @@ class URLRequestActivity : AppCompatActivity() {
         NavTools.setupNavBar(serverName,navView,this,R.id.navUrlReq, activityURLRequest) {
         }
 
+        val requestURL = intent.extras?.getString("requestURL")
+        requestURL.let {
+            editTextRequestURL.setText(requestURL)
+        }
+
+        val closeAfterRequest = intent.extras?.getBoolean("closeAfterRequest") == true
+
         //Set up the request button
         refreshSongListButton.setOnClickListener {button ->
             serverName?.let {
@@ -66,6 +73,9 @@ class URLRequestActivity : AppCompatActivity() {
                         override fun onFailure(call: Call<SongModel>, t: Throwable) {
                             window.dismiss()
                             displayMessage("Failed to request song")
+                            if (closeAfterRequest) {
+                                finish()
+                            }
                         }
 
                         override fun onResponse(
@@ -77,6 +87,9 @@ class URLRequestActivity : AppCompatActivity() {
                                 displayMessage("Successfully requested song")
                             } else {
                                 displayMessage("Failed to request song")
+                            }
+                            if (closeAfterRequest) {
+                                finish()
                             }
                         }
 
