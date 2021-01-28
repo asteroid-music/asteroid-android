@@ -9,10 +9,10 @@ import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.asteroid.asteroidfrontend.R
+import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.models.SongModel
-import com.asteroid.asteroidfrontend.services.ServiceBuilder
-import com.asteroid.asteroidfrontend.services.SongListInterface
+import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.utils.NavTools
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
@@ -59,8 +59,8 @@ class URLRequestActivity : AppCompatActivity() {
                 val serverInfo = realm.where<ServerModel>().equalTo("name",serverName).findFirst()
                 serverInfo?.let {
                     val reqUrl = editTextRequestURL.text.toString()
-                    val songListService = ServiceBuilder.buildService(SongListInterface::class.java)
-                    val requestCall = songListService.requestSong(serverInfo.address.plus("/music/songs"),reqUrl)
+                    val serverApi = ServiceBuilder.buildService(ServerAPI::class.java)
+                    val requestCall = serverApi.requestSong(serverInfo.address,reqUrl)
                     val inflatedView: View = LayoutInflater.from(applicationContext).inflate(R.layout.loading_popup, null)
                     val window = PopupWindow(
                         inflatedView,

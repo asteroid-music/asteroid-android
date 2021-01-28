@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.services
+package com.asteroid.asteroidfrontend.data.remote
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

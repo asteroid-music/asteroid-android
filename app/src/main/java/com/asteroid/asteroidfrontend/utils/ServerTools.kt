@@ -1,6 +1,7 @@
 package com.asteroid.asteroidfrontend.utils
 
 import android.content.Context
+import android.os.Bundle
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.models.Response
 import com.asteroid.asteroidfrontend.models.ServerModel
@@ -10,6 +11,33 @@ import io.realm.kotlin.where
 
 object ServerTools {
 
+    /**
+     * Gets information about the current server from the "serverName" extra passed in intent
+     *
+     * @param bundle: the activity's intent extras
+     * @param context: the context to initialise Realm to
+     *
+     * @returns: the server info if the passed server name exists and is valid, otherwise null
+     */
+    fun serverInfoFromIntent(bundle: Bundle?, context: Context): ServerModel? {
+        bundle?.let {
+            val serverName: String? = it.getString("serverName")
+            serverName?.let {
+                val realm = getRealmInstance(context)
+                return realm.where<ServerModel>().equalTo("name",serverName).findFirst()
+            }
+        }
+        return null
+    }
+
+    /**
+     * Safely gets a Realm default instance, ensuring that
+     * Realm.init() is called using a try/catch block
+     *
+     * @param context: the context to initialise Realm to
+     *
+     * @return: the default Realm instance
+     */
     fun getRealmInstance(context: Context): Realm {
         return try {
             Realm.getDefaultInstance()

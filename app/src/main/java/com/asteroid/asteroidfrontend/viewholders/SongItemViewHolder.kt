@@ -8,11 +8,11 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.utils.displayMessage
+import com.asteroid.asteroidfrontend.data.remote.ServerAPI
+import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.models.Message
 import com.asteroid.asteroidfrontend.models.SongModel
-import com.asteroid.asteroidfrontend.services.QueueInterface
-import com.asteroid.asteroidfrontend.services.ServiceBuilder
+import com.asteroid.asteroidfrontend.utils.displayMessage
 import kotlinx.android.synthetic.main.song_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,8 +34,8 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 itemView.songVoteCount.text = songInfo.votes.toString()
             }
             itemView.upvoteButton.setOnClickListener {
-                val voteService = ServiceBuilder.buildService(QueueInterface::class.java)
-                val requestCall = voteService.postQueue(serverAddress.plus("/queue/"),songInfo._id,1)
+                val serverApi = ServiceBuilder.buildService(ServerAPI::class.java)
+                val requestCall = serverApi.upvoteSong(serverAddress,songInfo._id,1)
                 songInfo.votes?.let { votes ->
                     itemView.songVoteCount.text = (votes + 1).toString()
                 }
@@ -76,8 +76,8 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 }
             }
             itemView.downvoteButton.setOnClickListener {
-                val voteService = ServiceBuilder.buildService(QueueInterface::class.java)
-                val requestCall = voteService.postQueue(serverAddress.plus("/queue/"),songInfo._id,-1)
+                val serverApi = ServiceBuilder.buildService(ServerAPI::class.java)
+                val requestCall = serverApi.upvoteSong(serverAddress,songInfo._id,-1)
                 songInfo.votes?.let { votes ->
                     itemView.songVoteCount.text = (votes - 1).toString()
                 }

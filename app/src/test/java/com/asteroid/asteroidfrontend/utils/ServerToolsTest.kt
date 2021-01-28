@@ -3,13 +3,16 @@ package com.asteroid.asteroidfrontend.utils
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.models.Response
 import com.asteroid.asteroidfrontend.models.ServerModel
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import io.realm.Realm
 import io.realm.RealmQuery
 import io.realm.RealmResults
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -87,6 +90,7 @@ class ServerToolsTest {
         }
     }
 
+    //Tests for addNewServer
     @Test
     fun addNewServer_freshInput_succeeds() {
         val emptyServerModel = ServerModel()
@@ -153,6 +157,7 @@ class ServerToolsTest {
         assertTrue(failureString, emptyServerModel.wifiNetworkId == IN_USE_LOCAL_SERVER_ID+1)
     }
 
+    //Tests for updateExistingServer
     @Test
     fun updateExistingServer_missingName_fails() {
         val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, "",VALID_SERVER_ADDRESS,false)

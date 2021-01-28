@@ -9,10 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.activities.URLRequestActivity
+import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.models.HealthCheck
 import com.asteroid.asteroidfrontend.models.ServerModel
-import com.asteroid.asteroidfrontend.services.ServerStatusInterface
-import com.asteroid.asteroidfrontend.services.ServiceBuilder
+import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import kotlinx.android.synthetic.main.server_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,8 +43,8 @@ class ShareRequestServerSelectAdapter(val context: Context, private val serverLi
                 itemView.deleteServerButton.visibility = View.GONE
 
                 //Query that the server is up
-                val healthCheckService = ServiceBuilder.buildService(ServerStatusInterface::class.java)
-                val requestCall = healthCheckService.getServerStatus(it.address.plus("/healthcheck"))
+                val serverApi = ServiceBuilder.buildService(ServerAPI::class.java)
+                val requestCall = serverApi.getServerStatus(it.address)
                 requestCall.enqueue(object: Callback<HealthCheck> {
                     override fun onFailure(call: Call<HealthCheck>, t: Throwable) {
                         itemView.progressBar.visibility = View.GONE
