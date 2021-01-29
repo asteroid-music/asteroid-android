@@ -4,26 +4,30 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.ServerListAdapter
+import com.asteroid.asteroidfrontend.databinding.ActivityServerListBinding
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import io.realm.kotlin.where
-import kotlinx.android.synthetic.main.activity_server_list.*
 
 /**
  * Activity showing a list of servers, and providing an "add server" button
  */
 class ServerListActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityServerListBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Set the server list layout
-        setContentView(R.layout.activity_server_list)
+
+        //Set up the binding
+        binding = ActivityServerListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         refreshRecyclerView()
 
         //Make the '+' button redirect to the AddServerActivity
-        addServerButton.setOnClickListener{
+        binding.addServerButton.setOnClickListener{
             val changePageIntent = Intent(this,ServerAddActivity::class.java)
             startActivity(changePageIntent)
         }
@@ -40,10 +44,10 @@ class ServerListActivity : AppCompatActivity() {
         //Create a vertical linear layout manager and apply it to the recyclerView
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.layoutManager = layoutManager
 
         //Create an instance of the server list adapter and apply it to the recyclerView
         val adapter = ServerListAdapter(this, realm.where<ServerModel>().findAll())
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
     }
 }

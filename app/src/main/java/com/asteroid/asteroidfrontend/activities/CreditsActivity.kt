@@ -4,30 +4,37 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.asteroid.asteroidfrontend.R
+import com.asteroid.asteroidfrontend.databinding.ActivityCreditsBinding
 import com.asteroid.asteroidfrontend.utils.NavTools
-import kotlinx.android.synthetic.main.activity_credits.*
 
 /**
  * Activity for requesting a song
  */
 class CreditsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityCreditsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSupportActionBar(toolBar)
-
-        //Set the server list layout
-        setContentView(R.layout.activity_credits)
+        //Set up the binding
+        binding = ActivityCreditsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Set up the menu button
-        menuButton.setOnClickListener {
-            activityCredits.openDrawer(GravityCompat.START,true)
+        binding.menuButton.setOnClickListener {
+            binding.activityCredits.openDrawer(GravityCompat.START,true)
         }
 
         val serverName: String? = intent.extras?.getString("serverName")
-        serverName?.let{toolBar.title = it}
+        serverName?.let{binding.toolBar.title = it}
+
         //Set the navigation menu up
-        NavTools.setupNavBar(serverName,navView,this,R.id.navCredits, activityCredits) {
-        }
+        NavTools.setupNavBar(
+            serverName,
+            binding.navView,
+            this,
+            R.id.navCredits,
+            binding.activityCredits) {}
     }
 }
