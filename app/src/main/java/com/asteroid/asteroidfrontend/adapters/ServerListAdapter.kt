@@ -16,7 +16,7 @@ import com.asteroid.asteroidfrontend.activities.ServerListActivity
 import com.asteroid.asteroidfrontend.activities.SongQueueActivity
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
-import com.asteroid.asteroidfrontend.models.HealthCheck
+import com.asteroid.asteroidfrontend.data.models.HealthCheck
 import com.asteroid.asteroidfrontend.models.ServerModel
 import io.realm.Realm
 import io.realm.kotlin.where

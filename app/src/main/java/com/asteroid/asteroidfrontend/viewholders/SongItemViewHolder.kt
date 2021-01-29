@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
-import com.asteroid.asteroidfrontend.models.Message
-import com.asteroid.asteroidfrontend.models.SongModel
+import com.asteroid.asteroidfrontend.data.models.Message
+import com.asteroid.asteroidfrontend.data.models.Song
 import com.asteroid.asteroidfrontend.utils.displayMessage
 import kotlinx.android.synthetic.main.song_list_item.view.*
 import retrofit2.Call
@@ -20,7 +20,7 @@ import retrofit2.Response
 import kotlin.math.floor
 
 class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    fun setData(serverAddress: String, songInfo: SongModel?, voteButtons: Boolean=false, unfolded: Boolean=false) {
+    fun setData(serverAddress: String, songInfo: Song?, voteButtons: Boolean=false, unfolded: Boolean=false) {
         songInfo?.let {
             itemView.songName.text = songInfo.song
             setUnfoldedState(songInfo,unfolded)
@@ -120,7 +120,7 @@ class SongItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    private fun setUnfoldedState(songInfo: SongModel, unfolded: Boolean) {
+    private fun setUnfoldedState(songInfo: Song, unfolded: Boolean) {
         val mins = floor(songInfo.duration.toFloat()/60).toInt()
         val secs = songInfo.duration.toInt() - 60*mins
         val durString = mins.toString().plus(":").plus(secs.toString())

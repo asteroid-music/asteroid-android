@@ -13,7 +13,7 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.SongListAdapter
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
-import com.asteroid.asteroidfrontend.models.SongModel
+import com.asteroid.asteroidfrontend.data.models.Song
 import com.asteroid.asteroidfrontend.utils.NavTools
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
@@ -73,16 +73,16 @@ class SongListActivity : AppCompatActivity() {
                     true
                 )
                 window.showAtLocation(activitySongList, Gravity.CENTER, 0, 0)
-                requestCall.enqueue(object : Callback<List<SongModel>> {
-                    override fun onFailure(call: Call<List<SongModel>>, t: Throwable) {
+                requestCall.enqueue(object : Callback<List<Song>> {
+                    override fun onFailure(call: Call<List<Song>>, t: Throwable) {
                         window.dismiss()
                         displayMessage("Unable to load song list!")
                     }
 
 
                     override fun onResponse(
-                        call: Call<List<SongModel>>,
-                        response: Response<List<SongModel>>
+                        call: Call<List<Song>>,
+                        response: Response<List<Song>>
                     ) {
                         window.dismiss()
                         if (response.isSuccessful) {

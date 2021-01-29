@@ -1,6 +1,6 @@
-package com.asteroid.asteroidfrontend.models
+package com.asteroid.asteroidfrontend.data.models
 
-data class SongModel(
+data class Song(
     var artist: String,
     var song: String,
     var duration: Number,

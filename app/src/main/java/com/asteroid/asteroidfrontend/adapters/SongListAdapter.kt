@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.models.SongModel
+import com.asteroid.asteroidfrontend.data.models.Song
 import com.asteroid.asteroidfrontend.viewholders.SongItemViewHolder
 
 /**
  * Adapter for the RecyclerView representing the server list
  */
-class SongListAdapter(private val serverAddress: String, private val context: Context, private val songList: List<SongModel>):
+class SongListAdapter(private val serverAddress: String, private val context: Context, private val songList: List<Song>):
     RecyclerView.Adapter<SongItemViewHolder>() {
 
     /**

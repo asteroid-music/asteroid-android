@@ -1,9 +1,9 @@
 package com.asteroid.asteroidfrontend.data.remote
 
-import com.asteroid.asteroidfrontend.models.HealthCheck
-import com.asteroid.asteroidfrontend.models.Message
-import com.asteroid.asteroidfrontend.models.QueueModel
-import com.asteroid.asteroidfrontend.models.SongModel
+import com.asteroid.asteroidfrontend.data.models.HealthCheck
+import com.asteroid.asteroidfrontend.data.models.Message
+import com.asteroid.asteroidfrontend.data.models.Queue
+import com.asteroid.asteroidfrontend.data.models.Song
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -38,7 +38,7 @@ interface ServerAPI {
      * @return a call object with the data of the queue
      */
     @GET("{baseUrl}/queue")
-    fun getQueue(@Path("baseUrl", encoded = true) baseUrl: String): Call<QueueModel>
+    fun getQueue(@Path("baseUrl", encoded = true) baseUrl: String): Call<Queue>
 
     /**
      * GET request to "/healthcheck" endpoint to check a server's health
@@ -59,7 +59,7 @@ interface ServerAPI {
     fun requestSong(
         @Path("baseUrl", encoded = true) baseUrl: String,
         @Query("url") song_url: String
-    ): Call<SongModel>
+    ): Call<Song>
 
     /**
      * GET request from "/music/songs"
@@ -67,6 +67,6 @@ interface ServerAPI {
      * @param baseUrl: the base URL of the server
      */
     @GET("{baseUrl}/music/songs")
-    fun getSongList(@Path("baseUrl", encoded = true) baseUrl: String): Call<List<SongModel>>
+    fun getSongList(@Path("baseUrl", encoded = true) baseUrl: String): Call<List<Song>>
 
 }

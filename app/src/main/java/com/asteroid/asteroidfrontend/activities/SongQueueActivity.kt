@@ -13,7 +13,7 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.adapters.SongListAdapter
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
-import com.asteroid.asteroidfrontend.models.QueueModel
+import com.asteroid.asteroidfrontend.data.models.Queue
 import com.asteroid.asteroidfrontend.utils.NavTools
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
@@ -75,16 +75,16 @@ class SongQueueActivity : AppCompatActivity() {
                     true
                 )
                 window.showAtLocation(activityQueue, Gravity.CENTER,0,0)
-                requestCall.enqueue(object: Callback<QueueModel> {
-                    override fun onFailure(call: Call<QueueModel>, t: Throwable) {
+                requestCall.enqueue(object: Callback<Queue> {
+                    override fun onFailure(call: Call<Queue>, t: Throwable) {
                         window.dismiss()
                         displayMessage("Unable to load queue!")
                     }
 
 
                     override fun onResponse(
-                        call: Call<QueueModel>,
-                        response: Response<QueueModel>
+                        call: Call<Queue>,
+                        response: Response<Queue>
                     ) {
                         window.dismiss()
                         if (response.isSuccessful) {

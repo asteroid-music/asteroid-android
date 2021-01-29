@@ -11,7 +11,7 @@ import androidx.core.view.GravityCompat
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.models.ServerModel
-import com.asteroid.asteroidfrontend.models.SongModel
+import com.asteroid.asteroidfrontend.data.models.Song
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.utils.NavTools
 import com.asteroid.asteroidfrontend.utils.ServerTools
@@ -69,8 +69,8 @@ class URLRequestActivity : AppCompatActivity() {
                         true
                     )
                     window.showAtLocation(button, Gravity.CENTER,0,0)
-                    requestCall.enqueue(object: Callback<SongModel> {
-                        override fun onFailure(call: Call<SongModel>, t: Throwable) {
+                    requestCall.enqueue(object: Callback<Song> {
+                        override fun onFailure(call: Call<Song>, t: Throwable) {
                             window.dismiss()
                             displayMessage("Failed to request song")
                             if (closeAfterRequest) {
@@ -79,8 +79,8 @@ class URLRequestActivity : AppCompatActivity() {
                         }
 
                         override fun onResponse(
-                            call: Call<SongModel>,
-                            response: Response<SongModel>
+                            call: Call<Song>,
+                            response: Response<Song>
                         ) {
                             window.dismiss()
                             if (response.isSuccessful) {

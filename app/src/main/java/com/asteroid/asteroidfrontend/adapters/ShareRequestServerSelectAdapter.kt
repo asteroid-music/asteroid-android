@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.activities.URLRequestActivity
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
-import com.asteroid.asteroidfrontend.models.HealthCheck
+import com.asteroid.asteroidfrontend.data.models.HealthCheck
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import kotlinx.android.synthetic.main.server_list_item.view.*
