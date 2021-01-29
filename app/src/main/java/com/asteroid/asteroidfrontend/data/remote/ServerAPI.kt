@@ -54,6 +54,7 @@ interface ServerAPI {
      *
      * @param baseUrl: the base URL of the server
      * @param song_url: the URL of the song to request
+     * @return a call object with the data of the added song
      */
     @POST("{baseUrl}/music/songs")
     fun requestSong(
@@ -65,6 +66,7 @@ interface ServerAPI {
      * GET request from "/music/songs"
      *
      * @param baseUrl: the base URL of the server
+     * @return a call object with the list of all songs on the server
      */
     @GET("{baseUrl}/music/songs")
     fun getSongList(@Path("baseUrl", encoded = true) baseUrl: String): Call<List<Song>>
