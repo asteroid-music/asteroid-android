@@ -1,9 +1,6 @@
 package com.asteroid.asteroidfrontend.data.repo
 
-import com.asteroid.asteroidfrontend.data.models.HealthCheck
-import com.asteroid.asteroidfrontend.data.models.Message
-import com.asteroid.asteroidfrontend.data.models.Queue
-import com.asteroid.asteroidfrontend.data.models.Song
+import com.asteroid.asteroidfrontend.data.models.*
 
 /**
  * Interface for data-access repository.
@@ -64,23 +61,23 @@ interface Repository {
     suspend fun getSongList(baseUrl: String): List<Song>
 
     /**
-     * Add a new server to the specified realm
+     * Add a new server to the stored list of servers
      *
-     * @param name: the name of the new server
-     * @param address: the address of the new server
-     * @param local: whether the server is local
-     * @param wifiNetworkId: if local, the associated wifi network ID
+     * @param newServer: the server to add
      */
-    fun addNewServer(name: String, address: String, local: Boolean, wifiNetworkId: Int? = null): Boolean
+    fun addNewServer(newServer: Server): Boolean
 
     /**
-     * Update the info of a server in specific realm
+     * Update the info of a server by primary key
      *
-     * @param oldName: the name of the server to update
-     * @param newName: the name of the updated server
-     * @param address: the address of the updated server
-     * @param local: whether the server is local
-     * @param wifiNetworkId: if local, the associated wifi network ID
+     * @param newServer: the server to update
      */
-    fun updateExistingServer(oldName: String, newName: String, address: String, local: Boolean, wifiNetworkId: Int? = null): Boolean
+    fun updateExistingServer(newServer: Server): Boolean
+
+    /**
+     * Remove a pre-existing server from the server list
+     *
+     * @param serverToRemove: the server to remove
+     */
+    fun removeExistingServer(serverToRemove: Server): Boolean
 }
