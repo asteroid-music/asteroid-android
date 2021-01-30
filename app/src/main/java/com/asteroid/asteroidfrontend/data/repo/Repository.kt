@@ -62,4 +62,25 @@ interface Repository {
      * @return the list of all songs on the server
      */
     suspend fun getSongList(baseUrl: String): List<Song>
+
+    /**
+     * Add a new server to the specified realm
+     *
+     * @param name: the name of the new server
+     * @param address: the address of the new server
+     * @param local: whether the server is local
+     * @param wifiNetworkId: if local, the associated wifi network ID
+     */
+    fun addNewServer(name: String, address: String, local: Boolean, wifiNetworkId: Int? = null): Boolean
+
+    /**
+     * Update the info of a server in specific realm
+     *
+     * @param oldName: the name of the server to update
+     * @param newName: the name of the updated server
+     * @param address: the address of the updated server
+     * @param local: whether the server is local
+     * @param wifiNetworkId: if local, the associated wifi network ID
+     */
+    fun updateExistingServer(oldName: String, newName: String, address: String, local: Boolean, wifiNetworkId: Int? = null): Boolean
 }
