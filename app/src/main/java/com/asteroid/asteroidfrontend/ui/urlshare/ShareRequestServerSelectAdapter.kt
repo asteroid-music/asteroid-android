@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.adapters
+package com.asteroid.asteroidfrontend.ui.urlshare
 
 import android.content.Context
 import android.content.Intent
@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.activities.URLRequestActivity
-import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.models.HealthCheck
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
+import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.ui.server.urlrequest.URLRequestActivity
 import kotlinx.android.synthetic.main.server_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback

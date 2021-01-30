@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.activities
+package com.asteroid.asteroidfrontend.ui.serverlist
 
 import android.content.Context
 import android.content.Intent

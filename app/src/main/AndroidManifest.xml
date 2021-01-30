@@ -12,14 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AsteroidAndroid">
-        <activity android:name=".activities.ServerListActivity">
+        <activity android:name=".ui.serverlist.ServerListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ShareRequestServerSelectActivity"
+        <activity android:name=".ui.urlshare.ShareRequestServerSelectActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -27,12 +27,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ServerAddActivity" />
-        <activity android:name=".activities.ServerEditActivity" />
-        <activity android:name=".activities.SongListActivity" />
-        <activity android:name=".activities.SongQueueActivity" />
-        <activity android:name=".activities.URLRequestActivity" />
-        <activity android:name=".activities.CreditsActivity" />
+        <activity android:name=".ui.serverlist.ServerAddActivity" />
+        <activity android:name=".ui.serverlist.ServerEditActivity" />
+        <activity android:name=".ui.server.songlist.SongListActivity" />
+        <activity android:name=".ui.server.queue.SongQueueActivity" />
+        <activity android:name=".ui.server.urlrequest.URLRequestActivity" />
+        <activity android:name=".ui.server.credits.CreditsActivity" />
     </application>
 
 </manifest>

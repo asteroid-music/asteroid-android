@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.activities
+package com.asteroid.asteroidfrontend.ui.server.credits
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

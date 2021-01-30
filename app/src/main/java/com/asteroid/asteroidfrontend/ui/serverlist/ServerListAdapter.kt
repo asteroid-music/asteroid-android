@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.adapters
+package com.asteroid.asteroidfrontend.ui.serverlist
 
 import android.content.Context
 import android.content.Intent
@@ -11,9 +11,7 @@ import android.widget.PopupWindow
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.activities.ServerEditActivity
-import com.asteroid.asteroidfrontend.activities.ServerListActivity
-import com.asteroid.asteroidfrontend.activities.SongQueueActivity
+import com.asteroid.asteroidfrontend.ui.server.queue.SongQueueActivity
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.data.models.HealthCheck
@@ -54,7 +52,8 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
 
                 //Set up event handler for edit button
                 itemView.editInfoButton.setOnClickListener {
-                    val refreshPageIntent = Intent(context,ServerEditActivity::class.java)
+                    val refreshPageIntent = Intent(context,
+                        ServerEditActivity::class.java)
                     refreshPageIntent.putExtra("serverName",serverInfo.name)
                     startActivity(context,refreshPageIntent,null)
                 }
@@ -78,7 +77,8 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                             results.deleteAllFromRealm()
                         }
                         popupWindow.dismiss()
-                        val refreshPageIntent = Intent(context,ServerListActivity::class.java)
+                        val refreshPageIntent = Intent(context,
+                            ServerListActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(context,refreshPageIntent,null)
                     }

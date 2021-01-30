@@ -7,7 +7,11 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.activities.*
+import com.asteroid.asteroidfrontend.ui.server.credits.CreditsActivity
+import com.asteroid.asteroidfrontend.ui.server.songlist.SongListActivity
+import com.asteroid.asteroidfrontend.ui.server.queue.SongQueueActivity
+import com.asteroid.asteroidfrontend.ui.server.urlrequest.URLRequestActivity
+import com.asteroid.asteroidfrontend.ui.serverlist.ServerListActivity
 import com.google.android.material.navigation.NavigationView
 
 object NavTools {
@@ -41,9 +45,12 @@ object NavTools {
                     thisTabCallback()
                     drawerLayout.closeDrawer(GravityCompat.START,true)
                 }
-                R.id.navServerList -> startInServerActivity(null,context,ServerListActivity::class.java)
-                R.id.navSongList -> startInServerActivity(serverName,context,SongListActivity::class.java)
-                R.id.navQueue -> startInServerActivity(serverName,context,SongQueueActivity::class.java)
+                R.id.navServerList -> startInServerActivity(null,context,
+                    ServerListActivity::class.java)
+                R.id.navSongList -> startInServerActivity(serverName,context,
+                    SongListActivity::class.java)
+                R.id.navQueue -> startInServerActivity(serverName,context,
+                    SongQueueActivity::class.java)
                 R.id.navUrlReq -> startInServerActivity(serverName,context, URLRequestActivity::class.java)
                 R.id.navCredits -> startInServerActivity(serverName,context, CreditsActivity::class.java)
             }

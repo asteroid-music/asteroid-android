@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.activities
+package com.asteroid.asteroidfrontend.ui.server.queue
 
 import android.os.Bundle
 import android.view.Gravity
@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.adapters.SongListAdapter
 import com.asteroid.asteroidfrontend.data.models.Queue
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.databinding.ActivityQueueBinding
+import com.asteroid.asteroidfrontend.ui.server.songlist.SongListAdapter
 import com.asteroid.asteroidfrontend.utils.NavTools
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
@@ -111,7 +111,12 @@ class SongQueueActivity : AppCompatActivity() {
                                 }.sortedByDescending { item -> item.votes }
 
                                 //Create an instance of the server list adapter and apply it to the recyclerView
-                                val adapter = SongListAdapter(serverInfo.address, this@SongQueueActivity, songList)
+                                val adapter =
+                                    SongListAdapter(
+                                        serverInfo.address,
+                                        this@SongQueueActivity,
+                                        songList
+                                    )
                                 binding.recyclerView.adapter = adapter
                             }
                         } else {

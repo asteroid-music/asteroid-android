@@ -1,12 +1,9 @@
-package com.asteroid.asteroidfrontend.activities
+package com.asteroid.asteroidfrontend.ui.serverlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.adapters.ShareRequestServerSelectAdapter
 import com.asteroid.asteroidfrontend.databinding.ActivityServerListBinding
 import com.asteroid.asteroidfrontend.models.ServerModel
 import com.asteroid.asteroidfrontend.utils.ServerTools
@@ -15,10 +12,9 @@ import io.realm.kotlin.where
 /**
  * Activity showing a list of servers, and providing an "add server" button
  */
-class ShareRequestServerSelectActivity : AppCompatActivity() {
+class ServerListActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityServerListBinding
-    var incomingURL: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +23,14 @@ class ShareRequestServerSelectActivity : AppCompatActivity() {
         binding = ActivityServerListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Get the shared URL
-        if (intent.action == Intent.ACTION_SEND && intent.type == "text/plain") {
-            incomingURL = intent.getStringExtra(Intent.EXTRA_TEXT)
-        }
-
         refreshRecyclerView()
 
-        binding.textView.text = getString(R.string.url_share_external_hint)
-
-        //Hide the '+' button
-        binding.addServerButton.visibility = View.GONE
+        //Make the '+' button redirect to the AddServerActivity
+        binding.addServerButton.setOnClickListener{
+            val changePageIntent = Intent(this,
+                ServerAddActivity::class.java)
+            startActivity(changePageIntent)
+        }
     }
 
     override fun onResume() {
@@ -54,7 +47,11 @@ class ShareRequestServerSelectActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = layoutManager
 
         //Create an instance of the server list adapter and apply it to the recyclerView
-        val adapter = ShareRequestServerSelectAdapter(this, realm.where<ServerModel>().findAll(),incomingURL)
+        val adapter =
+            ServerListAdapter(
+                this,
+                realm.where<ServerModel>().findAll()
+            )
         binding.recyclerView.adapter = adapter
     }
 }

@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.activities
+package com.asteroid.asteroidfrontend.ui.server.songlist
 
 import android.os.Bundle
 import android.view.Gravity
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.adapters.SongListAdapter
 import com.asteroid.asteroidfrontend.data.models.Song
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
@@ -104,11 +103,12 @@ class SongListActivity : AppCompatActivity() {
                                 binding.recyclerView.layoutManager = layoutManager
 
                                 //Create an instance of the server list adapter and apply it to the recyclerView
-                                val adapter = SongListAdapter(
-                                    serverInfo.address,
-                                    this@SongListActivity,
-                                    body
-                                )
+                                val adapter =
+                                    SongListAdapter(
+                                        serverInfo.address,
+                                        this@SongListActivity,
+                                        body
+                                    )
                                 binding.recyclerView.adapter = adapter
                             }
                         } else {

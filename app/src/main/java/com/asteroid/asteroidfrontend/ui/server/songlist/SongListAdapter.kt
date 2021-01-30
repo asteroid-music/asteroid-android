@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.adapters
+package com.asteroid.asteroidfrontend.ui.server.songlist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.data.models.Song
-import com.asteroid.asteroidfrontend.viewholders.SongItemViewHolder
+import com.asteroid.asteroidfrontend.ui.server.SongItemViewHolder
 
 /**
  * Adapter for the RecyclerView representing the server list
@@ -22,7 +22,9 @@ class SongListAdapter(private val serverAddress: String, private val context: Co
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongItemViewHolder {
         val inflatedView = LayoutInflater.from(context)
                 .inflate(R.layout.song_list_item, parent, false)
-        return SongItemViewHolder(inflatedView)
+        return SongItemViewHolder(
+            inflatedView
+        )
     }
 
     /**

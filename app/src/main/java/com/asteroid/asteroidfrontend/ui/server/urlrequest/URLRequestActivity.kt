@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.activities
+package com.asteroid.asteroidfrontend.ui.server.urlrequest
 
 import android.os.Bundle
 import android.view.Gravity

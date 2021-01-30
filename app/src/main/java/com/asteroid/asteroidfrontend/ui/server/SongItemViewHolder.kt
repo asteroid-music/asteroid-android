@@ -1,4 +1,4 @@
-package com.asteroid.asteroidfrontend.viewholders
+package com.asteroid.asteroidfrontend.ui.server
 
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -8,10 +8,10 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.data.remote.ServerAPI
-import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.data.models.Message
 import com.asteroid.asteroidfrontend.data.models.Song
+import com.asteroid.asteroidfrontend.data.remote.ServerAPI
+import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.utils.displayMessage
 import kotlinx.android.synthetic.main.song_list_item.view.*
 import retrofit2.Call
