@@ -2,7 +2,7 @@ package com.asteroid.asteroidfrontend.utils
 
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.models.Response
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.models.Server
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -26,15 +26,28 @@ class ServerToolsTest {
     private val IN_USE_LOCAL_SERVER_ID = 3
 
     private val IN_USE_SERVERS = listOf(
-        ServerModel(IN_USE_SERVER_NAME,"ARB_S_ADD",false),
-        ServerModel("ARB_S_NAM",IN_USE_PUBLIC_SERVER_ADDRESS,false),
-        ServerModel("OTHER_ARB_S_NAM",IN_USE_LOCAL_SERVER_ADDRESS,true,IN_USE_LOCAL_SERVER_ID)
+        Server(
+            IN_USE_SERVER_NAME,
+            "ARB_S_ADD",
+            false
+        ),
+        Server(
+            "ARB_S_NAM",
+            IN_USE_PUBLIC_SERVER_ADDRESS,
+            false
+        ),
+        Server(
+            "OTHER_ARB_S_NAM",
+            IN_USE_LOCAL_SERVER_ADDRESS,
+            true,
+            IN_USE_LOCAL_SERVER_ID
+        )
     )
 
     private lateinit var mockRealm: Realm
 
-    private fun generateMockQuery(serverList: List<ServerModel>): RealmQuery<ServerModel> {
-        val newQueryMock = mockk<RealmQuery<ServerModel>>()
+    private fun generateMockQuery(serverList: List<Server>): RealmQuery<Server> {
+        val newQueryMock = mockk<RealmQuery<Server>>()
         val stringSlot = slot<String>()
         val boolSlot = slot<Boolean>()
         val intSlot = slot<Int>()
@@ -49,7 +62,7 @@ class ServerToolsTest {
         every { newQueryMock.equalTo("wifiNetworkId",capture(intSlot)) } answers {
             generateMockQuery(serverList.filter { it.wifiNetworkId == intSlot.captured }) }
         every { newQueryMock.findAll() } answers {
-            val results = mockk<RealmResults<ServerModel>>()
+            val results = mockk<RealmResults<Server>>()
             every { results.isEmpty() } returns serverList.isEmpty()
             every { results.deleteAllFromRealm() } answers {
                 if (serverList.isEmpty()) {
@@ -62,13 +75,13 @@ class ServerToolsTest {
         return newQueryMock
     }
 
-    private fun addMockAdditionMethods(realm: Realm, model: ServerModel) {
+    private fun addMockAdditionMethods(realm: Realm, model: Server) {
         val stringSlot = slot<String>()
-        every { realm.createObject<ServerModel>(capture(stringSlot)) } answers {
+        every { realm.createObject<Server>(capture(stringSlot)) } answers {
             model.name = stringSlot.captured
             model
         }
-        val modelSlot = slot<ServerModel>()
+        val modelSlot = slot<Server>()
         every {realm.copyToRealmOrUpdate(capture(modelSlot))} answers {
             val newModel = modelSlot.captured
             model.name = newModel.name
@@ -82,7 +95,7 @@ class ServerToolsTest {
     @Before
     fun setup() {
         mockRealm = mockk()
-        every { mockRealm.where<ServerModel>() } answers { generateMockQuery(IN_USE_SERVERS) }
+        every { mockRealm.where<Server>() } answers { generateMockQuery(IN_USE_SERVERS) }
         val lambdaSlot = slot<Realm.Transaction>()
         every { mockRealm.executeTransaction(capture(lambdaSlot)) } answers {
             val transaction = lambdaSlot.captured
@@ -93,7 +106,8 @@ class ServerToolsTest {
     //Tests for addNewServer
     @Test
     fun addNewServer_freshInput_succeeds() {
-        val emptyServerModel = ServerModel()
+        val emptyServerModel =
+            Server()
         addMockAdditionMethods(mockRealm,emptyServerModel)
         val response = ServerTools.addNewServer(mockRealm,VALID_SERVER_NAME,VALID_SERVER_ADDRESS,false)
         assertTrue("Response indicated failure - success expected", response.success)
@@ -141,7 +155,8 @@ class ServerToolsTest {
 
     @Test
     fun addNewServer_inUseLocalAddressDifferentID_succeeds() {
-        val emptyServerModel = ServerModel()
+        val emptyServerModel =
+            Server()
         addMockAdditionMethods(mockRealm,emptyServerModel)
         val response = ServerTools.addNewServer(mockRealm,VALID_SERVER_NAME,IN_USE_LOCAL_SERVER_ADDRESS,true, IN_USE_LOCAL_SERVER_ID+1)
         assertTrue(response.success)
@@ -178,7 +193,8 @@ class ServerToolsTest {
 
     @Test
     fun updateExistingServer_validSameName_succeeds() {
-        val emptyServerModel = ServerModel()
+        val emptyServerModel =
+            Server()
         addMockAdditionMethods(mockRealm,emptyServerModel)
         val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, IN_USE_SERVER_NAME,VALID_SERVER_ADDRESS,false)
         assertTrue(response.success)
@@ -195,7 +211,8 @@ class ServerToolsTest {
 
     @Test
     fun updateExistingServer_validDifferentName_succeeds() {
-        val emptyServerModel = ServerModel()
+        val emptyServerModel =
+            Server()
         addMockAdditionMethods(mockRealm,emptyServerModel)
         val response = ServerTools.updateExistingServer(mockRealm,IN_USE_SERVER_NAME, VALID_SERVER_NAME,VALID_SERVER_ADDRESS,false)
         assertTrue(response.success)

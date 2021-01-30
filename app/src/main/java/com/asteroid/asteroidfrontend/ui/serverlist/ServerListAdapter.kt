@@ -15,7 +15,7 @@ import com.asteroid.asteroidfrontend.ui.server.queue.SongQueueActivity
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.data.models.HealthCheck
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.models.Server
 import io.realm.Realm
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.server_delete_confirmation.view.*
@@ -27,14 +27,14 @@ import retrofit2.Response
 /**
  * Adapter for the RecyclerView representing the server list
  */
-class ServerListAdapter(val context: Context, private val serverList: List<ServerModel>):
+class ServerListAdapter(val context: Context, private val serverList: List<Server>):
     RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
 
     /**
      * The view holder for a single server list item view
      */
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun setData(serverInfo: ServerModel?) {
+        fun setData(serverInfo: Server?) {
             serverInfo?.let {
                 //Set up server name
                 itemView.serverItemTitle.text = it.name
@@ -72,7 +72,7 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                     //Event handler for confirming delete
                     inflatedView.deleteYesButton.setOnClickListener {
                         val realm = Realm.getDefaultInstance()
-                        val results = realm.where<ServerModel>().equalTo("name",serverInfo.name).findAll()
+                        val results = realm.where<Server>().equalTo("name",serverInfo.name).findAll()
                         realm.executeTransaction {
                             results.deleteAllFromRealm()
                         }

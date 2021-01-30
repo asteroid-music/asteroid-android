@@ -13,7 +13,7 @@ import com.asteroid.asteroidfrontend.data.models.Song
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.databinding.ActivityUrlRequestBinding
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.models.Server
 import com.asteroid.asteroidfrontend.utils.NavTools
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import com.asteroid.asteroidfrontend.utils.displayMessage
@@ -66,7 +66,7 @@ class URLRequestActivity : AppCompatActivity() {
                 serverName?.let {
                     val realm = ServerTools.getRealmInstance(this@URLRequestActivity)
                     val serverInfo =
-                        realm.where<ServerModel>().equalTo("name", serverName).findFirst()
+                        realm.where<Server>().equalTo("name", serverName).findFirst()
                     serverInfo?.let {
                         val reqUrl = editTextRequestURL.text.toString()
                         val serverApi = ServiceBuilder.buildService(ServerAPI::class.java)

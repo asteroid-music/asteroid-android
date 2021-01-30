@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.databinding.ActivityServerListBinding
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.models.Server
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import io.realm.kotlin.where
 
@@ -50,7 +50,7 @@ class ServerListActivity : AppCompatActivity() {
         val adapter =
             ServerListAdapter(
                 this,
-                realm.where<ServerModel>().findAll()
+                realm.where<Server>().findAll()
             )
         binding.recyclerView.adapter = adapter
     }

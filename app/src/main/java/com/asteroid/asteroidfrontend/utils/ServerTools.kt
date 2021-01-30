@@ -3,8 +3,8 @@ package com.asteroid.asteroidfrontend.utils
 import android.content.Context
 import android.os.Bundle
 import com.asteroid.asteroidfrontend.R
+import com.asteroid.asteroidfrontend.data.models.Server
 import com.asteroid.asteroidfrontend.models.Response
-import com.asteroid.asteroidfrontend.models.ServerModel
 import io.realm.Realm
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
@@ -19,12 +19,12 @@ object ServerTools {
      *
      * @returns: the server info if the passed server name exists and is valid, otherwise null
      */
-    fun serverInfoFromIntent(bundle: Bundle?, context: Context): ServerModel? {
+    fun serverInfoFromIntent(bundle: Bundle?, context: Context): Server? {
         bundle?.let {
             val serverName: String? = it.getString("serverName")
             serverName?.let {
                 val realm = getRealmInstance(context)
-                return realm.where<ServerModel>().equalTo("name",serverName).findFirst()
+                return realm.where<Server>().equalTo("name",serverName).findFirst()
             }
         }
         return null
@@ -60,19 +60,19 @@ object ServerTools {
         when {
             name.isEmpty() -> return Response(false,R.string.server_name_empty_prompt)
             address.isEmpty() -> return Response(false,R.string.server_address_empty_prompt)
-            realm.where<ServerModel>().equalTo("name",name)
+            realm.where<Server>().equalTo("name",name)
                 .findAll()
                 .isNotEmpty() -> return Response(false, R.string.server_name_in_use_prompt)
-            (local && wifiNetworkId != null && realm.where<ServerModel>().equalTo("address",address)
+            (local && wifiNetworkId != null && realm.where<Server>().equalTo("address",address)
                 .equalTo("wifiNetworkId", wifiNetworkId)
                 .findAll()
                 .isNotEmpty()) -> return Response(false,R.string.server_address_in_use_prompt)
-            (!local && realm.where<ServerModel>().equalTo("address",address)
+            (!local && realm.where<Server>().equalTo("address",address)
                 .findAll()
                 .isNotEmpty()) -> return Response(false,R.string.server_address_in_use_prompt)
             else -> {
                 realm.executeTransaction {
-                    val newServerItem = realm.createObject<ServerModel>(name)
+                    val newServerItem = realm.createObject<Server>(name)
                     newServerItem.address = address
                     newServerItem.local = local
                     newServerItem.wifiNetworkId = wifiNetworkId
@@ -96,18 +96,18 @@ object ServerTools {
         when {
             newName.isEmpty() -> return Response(false, R.string.server_name_empty_prompt)
             address.isEmpty() -> return Response(false, R.string.server_address_empty_prompt)
-            realm.where<ServerModel>().equalTo("name",oldName)
+            realm.where<Server>().equalTo("name",oldName)
                 .findAll()
                 .isEmpty() -> return Response(false, R.string.server_name_not_recognised)
             (oldName != newName) -> {
                 realm.executeTransaction {
                     //Add new object
-                    val newServerItem = realm.createObject<ServerModel>(newName)
+                    val newServerItem = realm.createObject<Server>(newName)
                     newServerItem.address = address
                     newServerItem.local = local
                     newServerItem.wifiNetworkId = wifiNetworkId
                     //Delete old object
-                    realm.where<ServerModel>().equalTo("name",oldName)
+                    realm.where<Server>().equalTo("name",oldName)
                         .findAll()
                         .deleteAllFromRealm()
                 }
@@ -115,7 +115,7 @@ object ServerTools {
             else -> {
                 realm.executeTransaction {
                     realm.copyToRealmOrUpdate(
-                        ServerModel(
+                        Server(
                             newName,
                             address,
                             local,

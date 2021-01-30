@@ -11,7 +11,7 @@ import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.data.models.HealthCheck
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
 import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.models.Server
 import com.asteroid.asteroidfrontend.ui.server.urlrequest.URLRequestActivity
 import kotlinx.android.synthetic.main.server_list_item.view.*
 import retrofit2.Call
@@ -21,14 +21,14 @@ import retrofit2.Response
 /**
  * Adapter for the RecyclerView representing the server list
  */
-class ShareRequestServerSelectAdapter(val context: Context, private val serverList: List<ServerModel>, private val requestURL: String?):
+class ShareRequestServerSelectAdapter(val context: Context, private val serverList: List<Server>, private val requestURL: String?):
     RecyclerView.Adapter<ShareRequestServerSelectAdapter.ViewHolder>() {
 
     /**
      * The view holder for a single server list item view
      */
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun setData(serverInfo: ServerModel?) {
+        fun setData(serverInfo: Server?) {
             serverInfo?.let {
                 //Set up server name
                 itemView.serverItemTitle.text = it.name

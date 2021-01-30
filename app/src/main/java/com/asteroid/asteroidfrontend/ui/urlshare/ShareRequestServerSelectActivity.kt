@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.databinding.ActivityServerListBinding
-import com.asteroid.asteroidfrontend.models.ServerModel
+import com.asteroid.asteroidfrontend.data.models.Server
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import io.realm.kotlin.where
 
@@ -56,7 +56,7 @@ class ShareRequestServerSelectActivity : AppCompatActivity() {
         val adapter =
             ShareRequestServerSelectAdapter(
                 this,
-                realm.where<ServerModel>().findAll(),
+                realm.where<Server>().findAll(),
                 incomingURL
             )
         binding.recyclerView.adapter = adapter
