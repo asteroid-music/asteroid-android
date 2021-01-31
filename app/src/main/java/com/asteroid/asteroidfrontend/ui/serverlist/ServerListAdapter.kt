@@ -10,16 +10,15 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.ui.server.queue.SongQueueActivity
-import com.asteroid.asteroidfrontend.data.remote.ServerAPI
-import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
 import com.asteroid.asteroidfrontend.data.models.HealthCheck
 import com.asteroid.asteroidfrontend.data.models.Server
+import com.asteroid.asteroidfrontend.data.remote.ServerAPI
+import com.asteroid.asteroidfrontend.data.remote.ServiceBuilder
+import com.asteroid.asteroidfrontend.databinding.ServerDeleteConfirmationBinding
+import com.asteroid.asteroidfrontend.databinding.ServerListItemBinding
+import com.asteroid.asteroidfrontend.ui.server.queue.SongQueueActivity
 import io.realm.Realm
 import io.realm.kotlin.where
-import kotlinx.android.synthetic.main.server_delete_confirmation.view.*
-import kotlinx.android.synthetic.main.server_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,25 +32,25 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
     /**
      * The view holder for a single server list item view
      */
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(val binding: ServerListItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun setData(serverInfo: Server?) {
             serverInfo?.let {
                 //Set up server name
-                itemView.serverItemTitle.text = it.name
+                binding.serverItemTitle.text = it.name
 
                 //Set up server address
                 val reducedAddress: String = it.address.removePrefix("http://").removePrefix("https://")
-                itemView.serverItemAddress.text = reducedAddress
+                binding.serverItemAddress.text = reducedAddress
 
                 //Set up default click event handler
-                itemView.setOnClickListener {
+                binding.root.setOnClickListener {
                     val refreshPageIntent = Intent(context, SongQueueActivity::class.java)
                     refreshPageIntent.putExtra("serverName",serverInfo.name)
                     startActivity(context,refreshPageIntent,null)
                 }
 
                 //Set up event handler for edit button
-                itemView.editInfoButton.setOnClickListener {
+                binding.editInfoButton.setOnClickListener {
                     val refreshPageIntent = Intent(context,
                         ServerEditActivity::class.java)
                     refreshPageIntent.putExtra("serverName",serverInfo.name)
@@ -59,18 +58,20 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                 }
 
                 //Set up event handler for delete button
-                itemView.deleteServerButton.setOnClickListener {
-                    val inflatedView: View = LayoutInflater.from(context).inflate(R.layout.server_delete_confirmation,LinearLayout(context),false)
+                binding.deleteServerButton.setOnClickListener {
+                    val inflatedBinding = ServerDeleteConfirmationBinding.inflate(
+                        LayoutInflater.from(context)
+                    )
 
                     val popupWindow = PopupWindow(
-                        inflatedView,
+                        inflatedBinding.root,
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         true
                     )
 
                     //Event handler for confirming delete
-                    inflatedView.deleteYesButton.setOnClickListener {
+                    inflatedBinding.deleteYesButton.setOnClickListener {
                         val realm = Realm.getDefaultInstance()
                         val results = realm.where<Server>().equalTo("name",serverInfo.name).findAll()
                         realm.executeTransaction {
@@ -84,11 +85,11 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                     }
 
                     //Event handler for cancelling delete
-                    inflatedView.deleteNoButton.setOnClickListener {
+                    inflatedBinding.deleteNoButton.setOnClickListener {
                         popupWindow.dismiss()
                     }
 
-                    popupWindow.showAtLocation(itemView.deleteServerButton, Gravity.CENTER,0,0)
+                    popupWindow.showAtLocation(binding.deleteServerButton, Gravity.CENTER,0,0)
                 }
 
                 //Query that the server is up
@@ -96,8 +97,8 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                 val requestCall = serverApi.getServerStatus(it.address)
                 requestCall.enqueue(object: Callback<HealthCheck> {
                     override fun onFailure(call: Call<HealthCheck>, t: Throwable) {
-                        itemView.progressBar.visibility = View.GONE
-                        itemView.connectionBadIndicator.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
+                        binding.connectionBadIndicator.visibility = View.VISIBLE
                     }
 
                     override fun onResponse(
@@ -105,11 +106,11 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                         response: Response<HealthCheck>
                     ) {
                         if(response.isSuccessful) {
-                            itemView.progressBar.visibility = View.GONE
-                            itemView.connectionGoodIndicator.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.GONE
+                            binding.connectionGoodIndicator.visibility = View.VISIBLE
                         } else {
-                            itemView.progressBar.visibility = View.GONE
-                            itemView.connectionBadIndicator.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.GONE
+                            binding.connectionBadIndicator.visibility = View.VISIBLE
                         }
                     }
 
@@ -124,9 +125,9 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
      * @return an empty ViewHolder instance for the list item
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflatedView = LayoutInflater.from(context)
-                .inflate(R.layout.server_list_item, parent, false)
-        return ViewHolder(inflatedView)
+        val binding = ServerListItemBinding
+            .inflate(LayoutInflater.from(context),parent,false)
+        return ViewHolder(binding)
     }
 
     /**

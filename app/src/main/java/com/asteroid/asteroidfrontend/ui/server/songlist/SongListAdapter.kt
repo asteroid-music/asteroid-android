@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.data.models.Song
+import com.asteroid.asteroidfrontend.databinding.SongListItemBinding
 import com.asteroid.asteroidfrontend.ui.server.SongItemViewHolder
 
 /**
@@ -20,11 +20,8 @@ class SongListAdapter(private val serverAddress: String, private val context: Co
      * @return an empty ViewHolder instance for the list item
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongItemViewHolder {
-        val inflatedView = LayoutInflater.from(context)
-                .inflate(R.layout.song_list_item, parent, false)
-        return SongItemViewHolder(
-            inflatedView
-        )
+        val binding = SongListItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return SongItemViewHolder(binding)
     }
 
     /**
