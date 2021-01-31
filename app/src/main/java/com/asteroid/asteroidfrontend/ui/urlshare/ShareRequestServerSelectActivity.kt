@@ -2,12 +2,11 @@ package com.asteroid.asteroidfrontend.ui.urlshare
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asteroid.asteroidfrontend.R
-import com.asteroid.asteroidfrontend.databinding.ActivityServerListBinding
 import com.asteroid.asteroidfrontend.data.models.Server
+import com.asteroid.asteroidfrontend.databinding.ActivityServerShareListBinding
 import com.asteroid.asteroidfrontend.utils.ServerTools
 import io.realm.kotlin.where
 
@@ -16,14 +15,14 @@ import io.realm.kotlin.where
  */
 class ShareRequestServerSelectActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityServerListBinding
+    lateinit var binding: ActivityServerShareListBinding
     var incomingURL: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Set up the binding
-        binding = ActivityServerListBinding.inflate(layoutInflater)
+        binding = ActivityServerShareListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Get the shared URL
@@ -34,9 +33,6 @@ class ShareRequestServerSelectActivity : AppCompatActivity() {
         refreshRecyclerView()
 
         binding.textView.text = getString(R.string.url_share_external_hint)
-
-        //Hide the '+' button
-        binding.addServerButton.visibility = View.GONE
     }
 
     override fun onResume() {

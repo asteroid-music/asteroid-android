@@ -28,8 +28,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.serverlist.ServerAddActivity" />
-        <activity android:name=".ui.serverlist.ServerEditActivity" />
         <activity android:name=".ui.server.songlist.SongListActivity" />
         <activity android:name=".ui.server.queue.SongQueueActivity" />
         <activity android:name=".ui.server.urlrequest.URLRequestActivity" />

@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.asteroid.asteroidfrontend.R
 import com.asteroid.asteroidfrontend.data.models.HealthCheck
 import com.asteroid.asteroidfrontend.data.models.Server
 import com.asteroid.asteroidfrontend.data.remote.ServerAPI
@@ -26,7 +29,7 @@ import retrofit2.Response
 /**
  * Adapter for the RecyclerView representing the server list
  */
-class ServerListAdapter(val context: Context, private val serverList: List<Server>):
+class ServerListAdapter(val context: Context, private val serverList: List<Server>, val navController: NavController):
     RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
 
     /**
@@ -51,10 +54,11 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
 
                 //Set up event handler for edit button
                 binding.editInfoButton.setOnClickListener {
-                    val refreshPageIntent = Intent(context,
-                        ServerEditActivity::class.java)
-                    refreshPageIntent.putExtra("serverName",serverInfo.name)
-                    startActivity(context,refreshPageIntent,null)
+                    //Replace with nav
+                    navController.navigate(
+                        R.id.action_serverListFragment_to_serverEditFragment,
+                        bundleOf("serverName" to serverInfo.name)
+                    )
                 }
 
                 //Set up event handler for delete button
@@ -78,6 +82,7 @@ class ServerListAdapter(val context: Context, private val serverList: List<Serve
                             results.deleteAllFromRealm()
                         }
                         popupWindow.dismiss()
+
                         val refreshPageIntent = Intent(context,
                             ServerListActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/server_list_nav_graph"
+    app:startDestination="@id/serverListFragment">
+
+    <fragment
+        android:id="@+id/serverListFragment"
+        android:name="com.asteroid.asteroidfrontend.ui.serverlist.ServerListFragment"
+        android:label="ServerListFragment" >
+        <action
+            android:id="@+id/action_serverListFragment_to_serverAddFragment"
+            app:destination="@id/serverAddFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_serverEditFragment"
+            app:destination="@id/serverEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/serverAddFragment"
+        android:name="com.asteroid.asteroidfrontend.ui.serverlist.ServerAddFragment"
+        android:label="ServerAddFragment" />
+    <fragment
+        android:id="@+id/serverEditFragment"
+        android:name="com.asteroid.asteroidfrontend.ui.serverlist.ServerEditFragment"
+        android:label="ServerEditFragment" />
+</navigation>
